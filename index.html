@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OldOS — Linux dla starych maszyn</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0c0c0e;
+      --surface: #131316;
+      --border: #222228;
+      --accent: #5b9cf6;
+      --accent2: #a78bfa;
+      --text: #e8e8f0;
+      --muted: #6b6b80;
+      --green: #4ade80;
+      --radius: 12px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      padding: 18px 5%;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(12,12,14,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-family: 'DM Mono', monospace;
+      font-size: 1.1rem;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .logo span { color: var(--accent); }
+
+    nav ul { list-style: none; display: flex; gap: 32px; }
+    nav a { color: var(--muted); text-decoration: none; font-size: 0.9rem; transition: color .2s; }
+    nav a:hover { color: var(--text); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      text-align: center;
+      padding: 100px 5% 60px;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 0%, rgba(91,156,246,0.08) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 80% 80%, rgba(167,139,250,0.05) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(91,156,246,0.08);
+      border: 1px solid rgba(91,156,246,0.2);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 0.8rem;
+      color: var(--accent);
+      font-family: 'DM Mono', monospace;
+      margin-bottom: 32px;
+      animation: fadeUp .6s ease both;
+    }
+
+    .badge .dot {
+      width: 6px; height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    h1 {
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      line-height: 1.08;
+      margin-bottom: 24px;
+      animation: fadeUp .7s .1s ease both;
+    }
+
+    h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-sub {
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 48px;
+      animation: fadeUp .7s .2s ease both;
+    }
+
+    .hero-actions {
+      display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
+      animation: fadeUp .7s .3s ease both;
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 28px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all .2s;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-primary:hover { background: #7ab0f8; transform: translateY(-1px); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+
+    /* COMING SOON BANNER */
+    .coming-soon {
+      margin-top: 60px;
+      display: flex; align-items: center; gap: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 28px;
+      max-width: 480px;
+      animation: fadeUp .7s .4s ease both;
+    }
+
+    .cs-icon { font-size: 1.8rem; flex-shrink: 0; }
+
+    .cs-text strong { display: block; color: var(--text); font-size: 0.95rem; }
+    .cs-text span { font-size: 0.85rem; color: var(--muted); }
+
+    /* SECTIONS */
+    section { padding: 100px 5%; }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+    }
+
+    .section-sub {
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 520px;
+      margin-bottom: 56px;
+    }
+
+    /* FEATURES */
+    #features { background: var(--surface); }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .feature-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: border-color .2s, transform .2s;
+    }
+    .feature-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+    .feature-icon {
+      width: 44px; height: 44px;
+      background: rgba(91,156,246,0.1);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 18px;
+    }
+
+    .feature-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 8px; }
+    .feature-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.5; }
+
+    /* SPECS */
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .spec-block {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+
+    .spec-block h4 {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .spec-block ul { list-style: none; }
+    .spec-block li {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 0.9rem; color: var(--muted);
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .spec-block li:last-child { border-bottom: none; }
+    .spec-block li::before { content: '—'; color: var(--accent); font-size: 0.8rem; }
+
+    /* SCREENSHOTS */
+    #screenshots { background: var(--surface); }
+
+    .screenshots-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .screenshot-placeholder {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      aspect-ratio: 16/10;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .screenshot-placeholder .ss-icon { font-size: 2.4rem; opacity: .4; }
+    .screenshot-placeholder span { opacity: .5; }
+
+    /* INSTALL */
+    .install-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      counter-reset: step;
+    }
+
+    .step {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      position: relative;
+      counter-increment: step;
+    }
+
+    .step::before {
+      content: counter(step, decimal-leading-zero);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 14px;
+    }
+
+    .step h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 8px; }
+    .step p { font-size: 0.85rem; color: var(--muted); }
+
+    .code-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-top: 32px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--muted);
+      overflow-x: auto;
+    }
+
+    .code-block .line { display: block; padding: 3px 0; }
+    .code-block .cmd { color: var(--accent); }
+    .code-block .comment { color: #444458; }
+
+    /* DOWNLOAD */
+    #download { background: var(--surface); text-align: center; }
+
+    .download-card {
+      max-width: 480px; margin: 0 auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 48px 40px;
+      background: var(--bg);
+    }
+
+    .version-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .download-card h3 { font-size: 1.5rem; font-weight: 600; margin-bottom: 10px; }
+    .download-card p { color: var(--muted); font-size: 0.9rem; margin-bottom: 32px; }
+
+    .coming-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(74,222,128,0.08);
+      border: 1px solid rgba(74,222,128,0.2);
+      border-radius: 100px;
+      padding: 8px 20px;
+      font-size: 0.85rem;
+      color: var(--green);
+      font-weight: 500;
+      margin-bottom: 24px;
+    }
+
+    .download-meta { font-size: 0.8rem; color: var(--muted); margin-top: 20px; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 5%;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 16px;
+    }
+
+    footer p { font-size: 0.85rem; color: var(--muted); }
+    footer a { color: var(--accent); text-decoration: none; }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 640px) {
+      nav ul { display: none; }
+      .hero-actions { flex-direction: column; align-items: center; }
+      .coming-soon { flex-direction: column; text-align: center; }
+      footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">Old<span>OS</span></a>
+  <ul>
+    <li><a href="#features">Funkcje</a></li>
+    <li><a href="#specs">Specyfikacja</a></li>
+    <li><a href="#install">Instalacja</a></li>
+    <li><a href="#download">Pobierz</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="badge"><span class="dot"></span> v1.0 — w trakcie tworzenia</div>
+  <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(167,139,250,0.08); border:1px solid rgba(167,139,250,0.2); border-radius:100px; padding:5px 14px; font-size:0.78rem; color:var(--accent2); font-family:'DM Mono',monospace; margin-bottom:24px;">🐧 Oparty na Debianie</div>
+  <h1>Linux dla <em>starych</em><br>maszyn. Do grania.</h1>
+  <p class="hero-sub">OldOS to lekka dystrybucja oparta na Debian, stworzona z myślą o starszym sprzęcie. Openbox, Wine, RetroArch — i nic zbędnego.</p>
+  <div class="hero-actions">
+    <a href="#download" class="btn btn-primary">↓ Pobierz ISO</a>
+    <a href="https://github.com" class="btn btn-ghost">GitHub →</a>
+  </div>
+  <div class="coming-soon">
+    <div class="cs-icon">🚀</div>
+    <div class="cs-text">
+      <strong>Publiczne ISO już wkrótce</strong>
+      <span>System w trakcie tworzenia. Bądź na bieżąco!</span>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="section-label">Dlaczego OldOS?</div>
+  <h2 class="section-title">Zbudowany dla wydajności</h2>
+  <p class="section-sub">Każdy komponent jest dobrany tak, żeby wycisnąć maksimum ze starszego sprzętu.</p>
+  <div class="features-grid reveal">
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h3>Lekkie środowisko</h3>
+      <p>Openbox zużywa tylko ~50 MB RAM. Żadnych zbędnych efektów, całe zasoby idą do gier.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎮</div>
+      <h3>Gotowy do grania</h3>
+      <p>Wine i RetroArch preinstalowane. Uruchamiaj gry Windows i klasyki bez konfiguracji.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🐧</div>
+      <h3>Debian Testing</h3>
+      <p>Solidna baza z aktualnym oprogramowaniem i szerokim wsparciem sterowników.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💾</div>
+      <h3>Minimalne wymagania</h3>
+      <p>Działa na maszynach z 2–4 GB RAM i procesorami Intel Core 4. generacji.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🌐</div>
+      <h3>NetworkManager</h3>
+      <p>Prosta konfiguracja sieci Wi-Fi i Ethernet bez kombinowania w konsoli.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🖥️</div>
+      <h3>Pełny pulpit</h3>
+      <p>lxpanel, PCManFM i kompletne środowisko gotowe do codziennego użytku.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SPECS -->
+<section id="specs">
+  <div class="section-label">Specyfikacja</div>
+  <h2 class="section-title">Co jest w środku?</h2>
+  <p class="section-sub">Starannie dobrane komponenty — nic więcej, nic mniej.</p>
+  <div class="specs-grid reveal">
+    <div class="spec-block">
+      <h4>Minimalne wymagania</h4>
+      <ul>
+        <li>Intel Core i5/i7 gen. 4</li>
+        <li>Minimum 2–4 GB RAM</li>
+        <li>Dysk HDD lub SSD</li>
+      </ul>
+    </div>
+    <div class="spec-block">
+      <h4>Środowisko graficzne</h4>
+      <ul>
+        <li>Openbox (window manager)</li>
+        <li>lxpanel (pasek zadań)</li>
+        <li>PCManFM (menedżer plików)</li>
+        <li>~50 MB RAM w spoczynku</li>
+      </ul>
+    </div>
+    <div class="spec-block">
+      <h4>Gaming</h4>
+      <ul>
+        <li>Wine (gry Windows)</li>
+        <li>RetroArch (emulacja retro)</li>
+        <li>Obsługa joysticka i gamepada</li>
+      </ul>
+    </div>
+    <div class="spec-block">
+      <h4>System</h4>
+      <ul>
+        <li>Baza: Debian Testing</li>
+        <li>NetworkManager</li>
+        <li>nano, htop, curl, wget</li>
+        <li>ISO: ~1.1 GB</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SCREENSHOTS -->
+<section id="screenshots">
+  <div class="section-label">Galeria</div>
+  <h2 class="section-title">Jak wygląda OldOS?</h2>
+  <p class="section-sub">Screenshots zostaną dodane po finalnym wydaniu systemu.</p>
+  <div class="screenshots-grid reveal">
+    <div class="screenshot-placeholder"><span class="ss-icon">🖥️</span><span>Pulpit Openbox — wkrótce</span></div>
+    <div class="screenshot-placeholder"><span class="ss-icon">🎮</span><span>RetroArch w akcji — wkrótce</span></div>
+    <div class="screenshot-placeholder"><span class="ss-icon">📁</span><span>PCManFM — wkrótce</span></div>
+  </div>
+</section>
+
+<!-- INSTALL -->
+<section id="install">
+  <div class="section-label">Instalacja</div>
+  <h2 class="section-title">Jak zacząć?</h2>
+  <p class="section-sub">Cztery kroki i masz gotowy system do grania.</p>
+  <div class="install-steps reveal">
+    <div class="step">
+      <h3>Pobierz ISO</h3>
+      <p>Ściągnij obraz dysku OldOS z naszej strony na SourceForge.</p>
+    </div>
+    <div class="step">
+      <h3>Nagraj na USB</h3>
+      <p>Użyj Balena Etcher lub Rufus, żeby nagrać ISO na pendrive (min. 4 GB).</p>
+    </div>
+    <div class="step">
+      <h3>Uruchom z USB</h3>
+      <p>Zrestartuj komputer i wybierz pendrive jako urządzenie startowe w BIOS/UEFI.</p>
+    </div>
+    <div class="step">
+      <h3>Zainstaluj</h3>
+      <p>Postępuj zgodnie z instalatorem. Cały proces zajmuje kilkanaście minut.</p>
+    </div>
+  </div>
+  <div class="code-block reveal">
+    <span class="line comment"># Nagrywanie ISO na USB przez terminal (Linux/macOS)</span>
+    <span class="line"><span class="cmd">sudo dd</span> if=oldos-v1.0.iso of=/dev/sdX bs=4M status=progress</span>
+    <span class="line comment"># Lub użyj Balena Etcher — jest prostszy dla początkujących</span>
+  </div>
+</section>
+
+<!-- DOWNLOAD -->
+<section id="download">
+  <div class="section-label">Pobierz</div>
+  <h2 class="section-title">Gotowy na OldOS?</h2>
+  <p class="section-sub" style="margin: 0 auto 48px;">Publiczne ISO pojawi się wkrótce na SourceForge. Śledź nas na GitHub żeby nie przegapić!</p>
+  <div class="download-card reveal">
+    <div class="version-badge">OldOS v1.0</div>
+    <h3>OldOS ISO</h3>
+    <p>Lekka dystrybucja Linux dla starych komputerów. ~1.1 GB, bazuje na Debian Testing.</p>
+    <div class="coming-pill">🕐 Dostępny wkrótce</div>
+    <br/>
+    <a href="https://github.com" class="btn btn-ghost" style="display:inline-flex;">Obserwuj na GitHub →</a>
+    <p class="download-meta">Po wydaniu będzie dostępny bezpłatnie na SourceForge i GitHub Releases.</p>
+  </div>
+</section>
+
+<!-- EMAIL SIGNUP -->
+<section id="notify" style="background: var(--bg); text-align: center; padding: 80px 5%;">
+  <div class="section-label">Powiadomienie</div>
+  <h2 class="section-title">Chcesz zostać powiadomiony?</h2>
+  <p class="section-sub" style="margin: 0 auto 36px;">Wpisz swój e-mail poniżej — wyślemy Ci wiadomość, gdy system będzie dostępny.</p>
+  <div id="notify-form" class="reveal" style="max-width: 440px; margin: 0 auto; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+    <input id="notify-email" type="email" placeholder="twoj@email.com" style="
+      flex: 1; min-width: 220px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 13px 18px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color .2s;
+    " onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'" />
+    <button onclick="handleNotify()" class="btn btn-primary" style="white-space: nowrap;">Powiadom mnie</button>
+  </div>
+  <p id="notify-msg" style="margin-top: 16px; font-size: 0.85rem; color: var(--green); display: none;"></p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 OldOS Project — Otwartoźródłowy projekt Linux oparty na Debianie</p>
+  <p><a href="https://github.com">GitHub</a> · Licencja GPL-2.0</p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Email notify
+  function handleNotify() {
+    const input = document.getElementById('notify-email');
+    const msg = document.getElementById('notify-msg');
+    const email = input.value.trim();
+    const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    if (!valid) {
+      input.style.borderColor = '#f87171';
+      input.focus();
+      return;
+    }
+
+    // Save to localStorage
+    const list = JSON.parse(localStorage.getItem('oldos_notify') || '[]');
+    if (!list.includes(email)) list.push(email);
+    localStorage.setItem('oldos_notify', JSON.stringify(list));
+
+    input.value = '';
+    input.style.borderColor = 'var(--border)';
+    msg.textContent = '✓ Świetnie! Wyślemy Ci e-mail gdy OldOS będzie gotowy.';
+    msg.style.display = 'block';
+    setTimeout(() => { msg.style.display = 'none'; }, 5000);
+  }
+
+  document.getElementById('notify-email').addEventListener('keydown', e => {
+    if (e.key === 'Enter') handleNotify();
+  });
+</script>
+</body>
+</html>
