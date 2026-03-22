@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>OldOS — Linux dla starych maszyn — OldOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#fff;--s1:#f8fafc;--s2:#f1f5f9;--br:#e2e8f0;--ac:#2563eb;--ac2:#7c3aed;--tx:#0f172a;--mu:#64748b;--gr:#16a34a;--ra:12px}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);line-height:1.6;overflow-x:hidden}
+.wrap{padding-top:64px}
+.cnt{max-width:840px;margin:0 auto;padding:0 24px}
+.lbl{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--ac);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px}
+h1{font-size:clamp(2rem,6vw,3.8rem);font-weight:700;letter-spacing:-.04em;line-height:1.08;margin-bottom:18px}
+h1 em{font-style:normal;background:linear-gradient(135deg,#2563eb,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2{font-size:1.6rem;font-weight:700;letter-spacing:-.03em;margin-bottom:12px}
+h3{font-size:1rem;font-weight:600;margin-bottom:8px}
+p{color:var(--mu);font-size:.93rem;line-height:1.65;margin-bottom:12px}
+a{color:var(--ac);text-decoration:none}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:8px;font-size:.88rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all .18s;border:none;font-family:'Inter',sans-serif}
+.bp{background:var(--ac);color:#fff}
+.bp:hover{background:#1d4ed8;transform:translateY(-1px)}
+.bg{background:transparent;color:var(--tx);border:1.5px solid var(--br)}
+.bg:hover{border-color:var(--ac);color:var(--ac)}
+.sec{padding:72px 0}
+.alt{background:var(--s1);padding:72px 24px;margin:0 -24px}
+footer{border-top:1px solid var(--br);padding:32px 24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:80px}
+footer p{font-size:.8rem;color:var(--mu);margin:0}
+footer a{color:var(--ac)}
+.rv{opacity:0;transform:translateY(18px);transition:opacity .5s,transform .5s}
+.rv.on{opacity:1;transform:none}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.card{background:var(--bg);border:1px solid var(--br);border-radius:var(--ra);padding:22px;transition:border-color .2s,transform .2s}
+.card:hover{border-color:var(--ac);transform:translateY(-2px)}
+.ci{width:38px;height:38px;background:rgba(37,99,235,.08);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;margin-bottom:12px}nav{position:fixed;top:0;width:100%;z-index:999;padding:14px 24px;display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid #e2e8f0}
+.logo{font-family:'JetBrains Mono',monospace;font-size:1rem;color:#111827;text-decoration:none;font-weight:500}
+.logo b{color:#2563eb;font-weight:500}
+.hbg{background:none;border:none;cursor:pointer;padding:5px;display:flex;flex-direction:column;gap:5px;flex-shrink:0}
+.hbg span{display:block;width:20px;height:2px;background:#111827;border-radius:2px;transition:transform .25s,opacity .25s}
+.hbg.on span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hbg.on span:nth-child(2){opacity:0}
+.hbg.on span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.drw{position:fixed;top:0;left:-280px;width:255px;height:100%;background:#fff;z-index:1000;padding:76px 16px 32px;box-shadow:6px 0 24px rgba(0,0,0,.09);transition:left .25s ease;display:flex;flex-direction:column;gap:3px}
+.drw.on{left:0}
+.scr{position:fixed;inset:0;background:rgba(0,0,0,.22);z-index:998;opacity:0;pointer-events:none;transition:opacity .25s}
+.scr.on{opacity:1;pointer-events:all}
+.drw a{display:flex;align-items:center;gap:11px;padding:11px 14px;border-radius:9px;text-decoration:none;color:#374151;font-size:.92rem;font-weight:500;transition:background .14s,color .14s}
+.drw a:hover{background:#f3f4f6;color:#111827}
+.drw a.on{background:#eff6ff;color:#2563eb}
+.drw a.bl{background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0}
+.drw a.bl:hover{background:#dcfce7}
+.drw hr{border:none;border-top:1px solid #e5e7eb;margin:5px 0}
+.ni{font-size:1rem;width:22px;text-align:center;flex-shrink:0}</style>
+</head>
+<body>
+<div class="wrap">
+<nav>
+  <button class="hbg" id="H" aria-label="Menu"><span></span><span></span><span></span></button>
+  <a href="index.html" class="logo">Old<b>OS</b></a>
+</nav>
+<div class="scr" id="S"></div>
+<div class="drw" id="D">
+  <a href="index.html" class="on"><span class="ni">🏠</span>Strona główna</a>
+  <a href="about.html" class=""><span class="ni">📖</span>O projekcie</a>
+  <hr>
+  <a href="beta.html" class="bl"><span class="ni">🧪</span>Beta testerzy</a>
+  <a href="contact.html"><span class="ni">✉️</span>Kontakt</a>
+</div>
+
+<section style="min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:80px 24px 60px;background:radial-gradient(ellipse 65% 45% at 50% 0%,rgba(37,99,235,.06),transparent 68%)">
+  <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(37,99,235,.07);border:1px solid rgba(37,99,235,.18);border-radius:100px;padding:5px 14px;font-size:.74rem;color:#2563eb;font-family:'JetBrains Mono',monospace;margin-bottom:14px"><span style="width:6px;height:6px;background:#16a34a;border-radius:50%;animation:p 2s infinite"></span>v0.1 — w trakcie tworzenia</div>
+  <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.16);border-radius:100px;padding:5px 14px;font-size:.72rem;color:#7c3aed;font-family:'JetBrains Mono',monospace;margin-bottom:26px">🐧 Oparty na Debianie</div>
+  <h1>Linux dla <em>starych</em><br>maszyn. Do grania.</h1>
+  <p style="font-size:1.05rem;color:#64748b;max-width:480px;margin-bottom:36px">OldOS to darmowy system operacyjny dla starych komputerów. Instalujesz go zamiast Windowsa i możesz grać w gry — bez kupowania nowego sprzętu.</p>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:48px">
+    <a href="#download" class="btn bp">↓ Pobierz ISO</a>
+    <a href="https://github.com" class="btn bg">GitHub →</a>
+  </div>
+  <div style="display:flex;align-items:center;gap:13px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:16px 22px;max-width:400px;text-align:left">
+    <span style="font-size:1.5rem;flex-shrink:0">🚀</span>
+    <div><strong style="display:block;font-size:.88rem;color:#0f172a">Publiczne ISO już wkrótce</strong><span style="font-size:.8rem;color:#64748b">System w trakcie tworzenia. Bądź na bieżąco!</span></div>
+  </div>
+</section>
+<style>@keyframes p{0%,100%{opacity:1}50%{opacity:.35}}</style>
+
+<div class="cnt"><div class="sec rv">
+  <div class="lbl">Dlaczego OldOS?</div>
+  <h2>Dla każdego kto ma stary komputer</h2>
+  <p>Masz stary laptop który ledwo chodzi? OldOS da mu drugie życie — instalujesz i grasz, bez żadnej wiedzy technicznej.</p>
+  <div class="g3" style="margin-top:24px">
+    <div class="card"><div class="ci">🎮</div><h3>Gry od razu po instalacji</h3><p>Uruchamiaj gry windowsowe i stare klasyki bez żadnych dodatkowych kroków.</p></div>
+    <div class="card"><div class="ci">⚡</div><h3>Szybki nawet na słabym sprzęcie</h3><p>System zajmuje mało pamięci — więcej zasobów dla gier.</p></div>
+    <div class="card"><div class="ci">🙋</div><h3>Nie musisz znać się na IT</h3><p>Instalujesz, włączasz i grasz — zero skomplikowanej konfiguracji.</p></div>
+    <div class="card"><div class="ci">💻</div><h3>Stary laptop wystarczy</h3><p>Komputer z 2010–2020, 2 GB RAM — w zupełności wystarczy.</p></div>
+    <div class="card"><div class="ci">🐧</div><h3>Sprawdzona baza</h3><p>Bazuje na Debianie — jednym z najbardziej stabilnych systemów Linux.</p></div>
+    <div class="card"><div class="ci">🆓</div><h3>Całkowicie za darmo</h3><p>Zero opłat, zero subskrypcji — na zawsze bezpłatnie.</p></div>
+  </div>
+</div></div>
+
+<div class="alt rv"><div class="cnt">
+  <div class="lbl">Specyfikacja</div>
+  <h2>Co jest w środku?</h2>
+  <p>Wszystko dobrane tak żeby stary komputer działał jak najszybciej.</p>
+  <div class="g2" style="margin-top:24px">
+    <div style="border:1px solid var(--br);border-radius:var(--ra);padding:18px;background:var(--bg)"><h4 style="font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--ac);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">Minimalne wymagania</h4><ul style="list-style:none"><li style="font-size:.86rem;color:var(--mu);padding:3px 0;border-bottom:1px solid rgba(0,0,0,.04);display:flex;gap:7px"><span style="color:var(--ac)">—</span>Dowolny Intel lub AMD (2010–2020)</li><li style="font-size:.86rem;color:var(--mu);padding:3px 0;border-bottom:1px solid rgba(0,0,0,.04);display:flex;gap:7px"><span style="color:var(--ac)">—</span>Minimum 2 GB pamięci RAM</li><li style="font-size:.86rem;color:var(--mu);padding:3px 0;border-bottom:1px solid rgba(0,0,0,.04);display:flex;gap:7px"><span style="color:var(--ac)">—</span>15 GB miejsca na dysku</li><li style="font-size:.86rem;color:var(--mu);padding:3px 0;display:flex;gap:7px"><span style="color:var(--ac)">—</span>Dysk twardy lub SSD</li></ul></div>
+    <div style="border:1px solid var(--br);border-radius:var(--ra);padding:18px;background:var(--bg)"><h4 style="font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--ac);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">Wygląd systemu</h4><ul style="list-style:none"><li style="font-size:.86rem;color:var(--mu);padding:3px 0;border-bottom:1px solid rgba(0,0,0,.04);display:flex;gap:7px"><span style="color:var(--ac)">—</span>Openbox — szybki pulpit</li><li style="font-size:.86rem;color:var(--mu);padding:3px 0;border-bottom:1px solid rgba(0,0,0,.04);display:flex;gap:7px"><span style="color:var(--ac)">—</span>Pasek zadań na dole ekranu</li><li style="font-size:.86rem;color:var(--mu);padding:3px 0;border-bottom:1px solid rgba(0,0,0,.04);display:flex;gap:7px"><span style="color:var(--ac)">—</span>Menedżer plików</li><li style="font-size:.86rem;color:var(--mu);padding:3px 0;display:flex;gap:7px"><span style="color:var(--ac)">—</span>Zużywa tylko ~50 MB pamięci</li></ul></div>
+    <div style="border:1px solid var(--br);border-radius:var(--ra);padding:18px;background:var(--bg)"><h4 style="font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--ac);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">Granie</h4><ul style="list-style:none"><li style="font-size:.86rem;color:var(--mu);padding:3px 0;border-bottom:1px solid rgba(0,0,0,.04);display:flex;gap:7px"><span style="color:var(--ac)">—</span>Gry windowsowe (przez Wine)</li><li style="font-size:.86rem;color:var(--mu);padding:3px 0;border-bottom:1px solid rgba(0,0,0,.04);display:flex;gap:7px"><span style="color:var(--ac)">—</span>Retro gry (RetroArch)</li><li style="font-size:.86rem;color:var(--mu);padding:3px 0;display:flex;gap:7px"><span style="color:var(--ac)">—</span>Obsługa pada i joysticka</li></ul></div>
+    <div style="border:1px solid var(--br);border-radius:var(--ra);padding:18px;background:var(--bg)"><h4 style="font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--ac);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">System</h4><ul style="list-style:none"><li style="font-size:.86rem;color:var(--mu);padding:3px 0;border-bottom:1px solid rgba(0,0,0,.04);display:flex;gap:7px"><span style="color:var(--ac)">—</span>Oparty na Debianie 13</li><li style="font-size:.86rem;color:var(--mu);padding:3px 0;border-bottom:1px solid rgba(0,0,0,.04);display:flex;gap:7px"><span style="color:var(--ac)">—</span>Łatwe połączenie z Wi-Fi</li><li style="font-size:.86rem;color:var(--mu);padding:3px 0;border-bottom:1px solid rgba(0,0,0,.04);display:flex;gap:7px"><span style="color:var(--ac)">—</span>Podstawowe narzędzia w zestawie</li><li style="font-size:.86rem;color:var(--mu);padding:3px 0;display:flex;gap:7px"><span style="color:var(--ac)">—</span>Rozmiar instalatora: ~1.1 GB</li></ul></div>
+  </div>
+</div></div>
+
+<div class="cnt"><div class="sec rv">
+  <div class="lbl">Galeria</div>
+  <h2>Jak wygląda OldOS?</h2>
+  <p>Screenshoty pojawią się gdy system będzie gotowy.</p>
+  <div class="g3" style="margin-top:22px">
+    <div style="background:var(--s2);border:1px solid var(--br);border-radius:var(--ra);aspect-ratio:16/10;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--mu);font-size:.84rem"><span style="font-size:2rem;opacity:.35">🖥️</span>Pulpit — wkrótce</div>
+    <div style="background:var(--s2);border:1px solid var(--br);border-radius:var(--ra);aspect-ratio:16/10;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--mu);font-size:.84rem"><span style="font-size:2rem;opacity:.35">🎮</span>Granie — wkrótce</div>
+    <div style="background:var(--s2);border:1px solid var(--br);border-radius:var(--ra);aspect-ratio:16/10;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--mu);font-size:.84rem"><span style="font-size:2rem;opacity:.35">📁</span>Menedżer plików — wkrótce</div>
+  </div>
+</div></div>
+
+<div class="alt rv"><div class="cnt">
+  <div class="lbl">Plan rozwoju</div>
+  <h2>Roadmapa</h2>
+  <p>Gdzie jesteśmy i dokąd zmierzamy.</p>
+  <div style="margin-top:24px;max-width:620px;display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;gap:13px;align-items:flex-start"><span style="font-family:'JetBrains Mono',monospace;font-size:.72rem;background:rgba(22,163,74,.08);color:#16a34a;border:1px solid rgba(22,163,74,.22);border-radius:100px;padding:3px 11px;white-space:nowrap;margin-top:3px;flex-shrink:0">v0.1</span><div style="flex:1;border:1px solid var(--br);border-radius:var(--ra);padding:14px 18px;background:var(--bg)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px"><strong style="font-size:.9rem">Pierwsze ISO</strong><span style="font-family:'JetBrains Mono',monospace;font-size:.7rem;color:#16a34a">✓ gotowe</span></div><p style="margin:0;font-size:.83rem">Działające ISO oparte na Debianie, system bootuje, zmieniona nazwa na OldOS.</p></div></div>
+    <div style="display:flex;gap:13px;align-items:flex-start"><span style="font-family:'JetBrains Mono',monospace;font-size:.72rem;background:rgba(37,99,235,.08);color:#2563eb;border:1px solid rgba(37,99,235,.22);border-radius:100px;padding:3px 11px;white-space:nowrap;margin-top:3px;flex-shrink:0">v0.2</span><div style="flex:1;border:1px solid var(--br);border-radius:var(--ra);padding:14px 18px;background:var(--bg)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px"><strong style="font-size:.9rem">Pełny pulpit</strong><span style="font-family:'JetBrains Mono',monospace;font-size:.7rem;color:#2563eb">⚙ w trakcie</span></div><p style="margin:0;font-size:.83rem">Openbox z działającą grafiką, pasek zadań, menedżer plików, naprawiony czarny ekran.</p></div></div>
+    <div style="display:flex;gap:13px;align-items:flex-start"><span style="font-family:'JetBrains Mono',monospace;font-size:.72rem;background:rgba(100,116,139,.07);color:#64748b;border:1px solid rgba(100,116,139,.18);border-radius:100px;padding:3px 11px;white-space:nowrap;margin-top:3px;flex-shrink:0">v0.5</span><div style="flex:1;border:1px solid var(--br);border-radius:var(--ra);padding:14px 18px;background:var(--bg)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px"><strong style="font-size:.9rem">Gaming ready</strong><span style="font-family:'JetBrains Mono',monospace;font-size:.7rem;color:#64748b">⏳ planowane</span></div><p style="margin:0;font-size:.83rem">Wine i RetroArch preinstalowane, obsługa gamepadów, własne logo i motyw.</p></div></div>
+    <div style="display:flex;gap:13px;align-items:flex-start"><span style="font-family:'JetBrains Mono',monospace;font-size:.72rem;background:rgba(100,116,139,.07);color:#64748b;border:1px solid rgba(100,116,139,.18);border-radius:100px;padding:3px 11px;white-space:nowrap;margin-top:3px;flex-shrink:0">v1.0</span><div style="flex:1;border:1px solid var(--br);border-radius:var(--ra);padding:14px 18px;background:var(--bg)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px"><strong style="font-size:.9rem">Publiczne wydanie</strong><span style="font-family:'JetBrains Mono',monospace;font-size:.7rem;color:#64748b">⏳ planowane</span></div><p style="margin:0;font-size:.83rem">Publiczne ISO, instalator z graficznym interfejsem, pełna dokumentacja.</p></div></div>
+  </div>
+</div></div>
+
+<div class="cnt"><div class="sec rv">
+  <div class="lbl">Przyszłość projektu</div>
+  <h2>Plany na przyszłość 🔮</h2>
+  <p>To dopiero początek — oto co planujemy zrobić z OldOS.</p>
+  <div class="g3" style="margin-top:22px">
+    <div style="border:1px solid var(--br);border-left:3px solid #16a34a;border-radius:var(--ra);padding:18px;background:var(--bg)"><div style="font-family:'JetBrains Mono',monospace;font-size:.68rem;color:#16a34a;margin-bottom:9px">🟢 WKRÓTCE</div><h3>Własne logo i motyw</h3><p>Unikalny wygląd — własna tapeta, ikony i kolory OldOS.</p></div>
+    <div style="border:1px solid var(--br);border-left:3px solid #16a34a;border-radius:var(--ra);padding:18px;background:var(--bg)"><div style="font-family:'JetBrains Mono',monospace;font-size:.68rem;color:#16a34a;margin-bottom:9px">🟢 WKRÓTCE</div><h3>Prosty instalator</h3><p>Instalacja krok po kroku z graficznym interfejsem — bez terminala.</p></div>
+    <div style="border:1px solid var(--br);border-left:3px solid #2563eb;border-radius:var(--ra);padding:18px;background:var(--bg)"><div style="font-family:'JetBrains Mono',monospace;font-size:.68rem;color:#2563eb;margin-bottom:9px">🔵 W PLANACH</div><h3>Sklep z grami</h3><p>Prosta aplikacja do instalowania darmowych gier jednym kliknięciem.</p></div>
+    <div style="border:1px solid var(--br);border-left:3px solid #2563eb;border-radius:var(--ra);padding:18px;background:var(--bg)"><div style="font-family:'JetBrains Mono',monospace;font-size:.68rem;color:#2563eb;margin-bottom:9px">🔵 W PLANACH</div><h3>Centrum aktualizacji</h3><p>Automatyczne aktualizacje systemu bez kombinowania.</p></div>
+    <div style="border:1px solid var(--br);border-left:3px solid #7c3aed;border-radius:var(--ra);padding:18px;background:var(--bg)"><div style="font-family:'JetBrains Mono',monospace;font-size:.68rem;color:#7c3aed;margin-bottom:9px">🟣 PRZYSZŁOŚĆ</div><h3>OldOS Mobile</h3><p>Wersja na stare smartfony z Androidem — daj drugie życie telefonowi.</p></div>
+    <div style="border:1px solid var(--br);border-left:3px solid #7c3aed;border-radius:var(--ra);padding:18px;background:var(--bg)"><div style="font-family:'JetBrains Mono',monospace;font-size:.68rem;color:#7c3aed;margin-bottom:9px">🟣 PRZYSZŁOŚĆ</div><h3>Społeczność OldOS</h3><p>Forum, Discord i baza poradników tworzonych przez użytkowników.</p></div>
+  </div>
+</div></div>
+
+<div class="alt rv" id="download"><div class="cnt" style="text-align:center">
+  <div class="lbl">Pobierz</div>
+  <h2>Gotowy na OldOS?</h2>
+  <p style="max-width:400px;margin:0 auto 32px">System w trakcie tworzenia. Publiczna wersja pojawi się wkrótce!</p>
+  <div style="max-width:440px;margin:0 auto;border:1px solid var(--br);border-radius:var(--ra);padding:32px;background:var(--bg);text-align:center">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--mu);margin-bottom:12px">OldOS v1.0</div>
+    <h3 style="margin-bottom:10px">OldOS — darmowy system dla starych PC</h3>
+    <p>Instalujesz zamiast Windowsa, grasz od razu. Bezpłatnie, na zawsze.</p>
+    <div style="display:inline-flex;align-items:center;gap:7px;background:rgba(22,163,74,.08);border:1px solid rgba(22,163,74,.2);border-radius:100px;padding:6px 16px;font-size:.8rem;color:#16a34a;font-weight:500;margin-bottom:16px">🕐 Dostępny wkrótce</div><br>
+    <a href="https://github.com" class="btn bg">Obserwuj na GitHub →</a>
+    <p style="font-size:.74rem;margin-top:12px">Po wydaniu dostępny bezpłatnie do pobrania.</p>
+  </div>
+</div></div>
+
+<div class="cnt"><div class="sec rv">
+  <div class="lbl">Powiadomienie</div>
+  <h2>Chcesz wiedzieć gdy OldOS będzie gotowy?</h2>
+  <p>Wpisz swój e-mail — wyślemy Ci wiadomość gdy system będzie dostępny do pobrania.</p>
+  <div style="max-width:480px;margin-top:24px">
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <input id="em" type="email" placeholder="twoj@email.com" style="flex:1;min-width:200px;background:#fff;border:1.5px solid var(--br);border-radius:8px;padding:11px 16px;font-family:'Inter',sans-serif;font-size:.9rem;color:var(--tx);outline:none;transition:border-color .2s" onfocus="this.style.borderColor='#2563eb'" onblur="this.style.borderColor='#e2e8f0'">
+      <button onclick="sub()" class="btn bp">Powiadom mnie</button>
+    </div>
+    <p id="msg" style="margin-top:12px;font-size:.83rem;color:#16a34a;display:none"></p>
+  </div>
+</div></div>
+<script>
+function sub(){
+  var e=document.getElementById('em'),m=document.getElementById('msg'),v=e.value.trim();
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)){e.style.borderColor='#dc2626';e.focus();return;}
+  var l=JSON.parse(localStorage.getItem('n')||'[]');
+  if(!l.includes(v))l.push(v);
+  localStorage.setItem('n',JSON.stringify(l));
+  e.value='';e.style.borderColor='#e2e8f0';
+  m.textContent='✓ Zapisano! Wyślemy Ci e-mail gdy OldOS będzie gotowy.';m.style.display='block';
+  setTimeout(function(){m.style.display='none'},5000);
+}
+document.getElementById('em').addEventListener('keydown',function(e){if(e.key==='Enter')sub()});
+</script>
+
+<footer>
+  <p>© 2026 OldOS Project — Otwartoźródłowy projekt Linux oparty na Debianie</p>
+  <p><a href="https://github.com">GitHub</a> · Licencja GPL-2.0</p>
+</footer>
+</div>
+<script>(function(){var h=document.getElementById('H'),d=document.getElementById('D'),s=document.getElementById('S');function o(){h.classList.add('on');d.classList.add('on');s.classList.add('on')}function c(){h.classList.remove('on');d.classList.remove('on');s.classList.remove('on')}h.addEventListener('click',function(){d.classList.contains('on')?c():o()});s.addEventListener('click',c)})();(function(){var o=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting)x.target.classList.add('on')})},{threshold:0.08});document.querySelectorAll('.rv').forEach(function(el){o.observe(el)})})();</script>
+</body>
+</html>
