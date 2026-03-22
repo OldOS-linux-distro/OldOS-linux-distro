@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>O projekcie — OldOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    :root{--bg:#fff;--sf:#f8fafc;--sf2:#f1f5f9;--br:#e2e8f0;--ac:#2563eb;--ac2:#7c3aed;--tx:#0f172a;--mu:#64748b;--gr:#16a34a;--rd:#dc2626;--ra:12px;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);line-height:1.6;overflow-x:hidden;}
+    .wrap{padding-top:65px;}
+    .cnt{max-width:820px;margin:0 auto;padding:0 24px;}
+    .lbl{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--ac);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px;}
+    h1{font-size:clamp(2.2rem,6vw,4rem);font-weight:700;letter-spacing:-.04em;line-height:1.08;margin-bottom:20px;}
+    h1 em{font-style:normal;background:linear-gradient(135deg,#2563eb,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    h2{font-size:1.5rem;font-weight:700;letter-spacing:-.02em;margin-bottom:14px;}
+    h3{font-size:1rem;font-weight:600;margin-bottom:8px;}
+    p{color:var(--mu);font-size:.93rem;margin-bottom:14px;}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:8px;font-size:.9rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all .18s;border:none;font-family:'DM Sans',sans-serif;}
+    .btn-p{background:var(--ac);color:#fff;}
+    .btn-p:hover{background:#1d4ed8;transform:translateY(-1px);}
+    .btn-g{background:transparent;color:var(--tx);border:1.5px solid var(--br);}
+    .btn-g:hover{border-color:var(--ac);color:var(--ac);}
+    footer{border-top:1px solid var(--br);padding:36px 24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:80px;}
+    footer p{font-size:.82rem;color:var(--mu);margin:0;}
+    footer a{color:var(--ac);text-decoration:none;}
+    .sec{padding:72px 0;}
+    .sec-alt{background:var(--sf);padding:72px 24px;margin:0 -24px;}
+    .reveal{opacity:0;transform:translateY(20px);transition:opacity .5s,transform .5s;}
+    .reveal.vis{opacity:1;transform:none;}
+    .g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;}
+    .card{background:var(--bg);border:1px solid var(--br);border-radius:var(--ra);padding:22px;transition:border-color .2s,transform .2s;}
+    .card:hover{border-color:var(--ac);transform:translateY(-2px);}
+    .card-ico{width:40px;height:40px;background:rgba(37,99,235,.08);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:14px;}
+
+    nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 16px 24px; display: flex; align-items: center; gap: 16px; background: rgba(255,255,255,0.96); backdrop-filter: blur(12px); border-bottom: 1px solid #e5e7eb; }
+    .logo { font-family: 'DM Mono', monospace; font-size: 1.05rem; color: #111827; text-decoration: none; font-weight: 500; }
+    .logo span { color: #2563eb; }
+    .hbg { background: none; border: none; cursor: pointer; padding: 6px; display: flex; flex-direction: column; gap: 5px; }
+    .hbg span { display: block; width: 22px; height: 2px; background: #111827; border-radius: 2px; transition: transform .3s, opacity .3s; }
+    .hbg.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hbg.open span:nth-child(2) { opacity: 0; }
+    .hbg.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .drawer { position: fixed; top: 0; left: -300px; width: 260px; height: 100%; background: #fff; z-index: 1050; padding: 80px 20px 40px; box-shadow: 8px 0 32px rgba(0,0,0,0.1); transition: left .28s cubic-bezier(.4,0,.2,1); display: flex; flex-direction: column; gap: 4px; }
+    .drawer.open { left: 0; }
+    .scrim { position: fixed; inset: 0; background: rgba(0,0,0,0.25); z-index: 1040; opacity: 0; pointer-events: none; transition: opacity .28s; }
+    .scrim.open { opacity: 1; pointer-events: all; }
+    .drawer a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 10px; text-decoration: none; color: #374151; font-size: .95rem; font-weight: 500; transition: background .15s, color .15s; }
+    .drawer a:hover { background: #f3f4f6; color: #111827; }
+    .drawer a.cur { background: #eff6ff; color: #2563eb; }
+    .drawer a.beta-lnk { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+    .drawer a.beta-lnk:hover { background: #dcfce7; }
+    .drawer hr { border: none; border-top: 1px solid #e5e7eb; margin: 6px 0; }
+    .nav-icon { font-size: 1.1rem; width: 24px; text-align: center; flex-shrink: 0; }
+.hero{padding:120px 24px 60px;border-bottom:1px solid var(--br);}
+.info-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-top:24px;}
+.inf{background:var(--sf);border:1px solid var(--br);border-radius:var(--ra);padding:18px;}
+.inf .lb{font-size:.7rem;color:var(--ac);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+.inf .vl{font-size:.92rem;font-weight:600;}
+.team-card{display:flex;align-items:center;gap:16px;background:var(--sf);border:1px solid var(--br);border-radius:var(--ra);padding:18px;margin-top:16px;}
+.av{width:50px;height:50px;border-radius:50%;background:rgba(37,99,235,.1);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;}
+.future-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;}
+.fut-card{border:1px solid var(--br);border-radius:var(--ra);padding:20px;background:var(--bg);border-left:3px solid var(--ac);}
+.fut-card.soon{border-left-color:var(--gr);}
+.fut-card.later{border-left-color:var(--ac2);}
+.fut-tag{font-family:'DM Mono',monospace;font-size:.7rem;margin-bottom:10px;}
+.t-soon{color:var(--gr);} .t-mid{color:var(--ac);} .t-later{color:var(--ac2);}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav>
+  <button class="hbg" id="hbg" aria-label="Menu"><span></span><span></span><span></span></button>
+  <a href="index.html" class="logo">Old<span>OS</span></a>
+</nav>
+<div class="scrim" id="scrim"></div>
+<div class="drawer" id="drawer">
+  <a href="index.html" class=""><span class="nav-icon">🏠</span> Strona główna</a>
+  <a href="about.html" class="cur"><span class="nav-icon">📖</span> O projekcie</a>
+  <hr>
+  <a href="beta.html" class="beta-lnk"><span class="nav-icon">🧪</span> Beta testerzy</a>
+</div>
+<div class="hero cnt">
+  <div class="lbl">O projekcie</div>
+  <h1>Czym jest <em>OldOS</em>?</h1>
+  <p style="font-size:1.05rem;color:var(--mu);max-width:560px;">OldOS to projekt tworzony z pasji — darmowy system operacyjny stworzony po to, żeby stare komputery znowu miały sens. Dla graczy, dla osób z ograniczonym budżetem, dla każdego.</p>
+</div>
+<div class="cnt">
+  <div class="sec reveal">
+    <h2>Skąd pomysł?</h2>
+    <p>Wiele osób ma w domu stary laptop który ledwo chodzi — zbyt słaby na nowego Windowsa, za dobry żeby go wyrzucić. OldOS powstał właśnie dla takich maszyn.</p>
+    <p>Zamiast kupować nowy sprzęt, możesz zainstalować OldOS i cieszyć się płynnym systemem z grami — zupełnie za darmo.</p>
+    <div class="info-g">
+      <div class="inf"><div class="lb">Status projektu</div><div class="vl">🟡 W trakcie tworzenia</div></div>
+      <div class="inf"><div class="lb">Wersja</div><div class="vl">v0.1 — pierwsze ISO</div></div>
+      <div class="inf"><div class="lb">Baza systemu</div><div class="vl">Debian 13 Testing</div></div>
+      <div class="inf"><div class="lb">Licencja</div><div class="vl">GPL-2.0 (darmowy)</div></div>
+    </div>
+  </div>
+</div>
+<div class="sec-alt reveal"><div class="cnt">
+  <h2>Cel projektu</h2>
+  <p>Chcemy stworzyć system który każdy może zainstalować w 20 minut i od razu grać — bez czytania dokumentacji, bez znajomości Linuxa, bez płacenia za licencje.</p>
+  <p>OldOS ma być jak najprostszy, jak najszybszy i gotowy do grania od pierwszego uruchomienia.</p>
+</div></div>
+<div class="cnt">
+  <div class="sec reveal">
+    <div class="lbl">Przyszłość projektu</div>
+    <h2>Plany na przyszłość 🔮</h2>
+    <p>To dopiero początek — oto co planujemy zrobić z OldOS.</p>
+    <div class="future-g" style="margin-top:24px;">
+      <div class="fut-card soon"><div class="fut-tag t-soon">🟢 WKRÓTCE</div><h3>Własne logo i motyw</h3><p>Unikalny wygląd systemu — własna tapeta, ikony i kolory OldOS.</p></div>
+      <div class="fut-card soon"><div class="fut-tag t-soon">🟢 WKRÓTCE</div><h3>Prosty instalator</h3><p>Instalacja krok po kroku z graficznym interfejsem — bez terminala.</p></div>
+      <div class="fut-card"><div class="fut-tag t-mid">🔵 W PLANACH</div><h3>Sklep z grami</h3><p>Prosta aplikacja do instalowania darmowych gier jednym kliknięciem.</p></div>
+      <div class="fut-card"><div class="fut-tag t-mid">🔵 W PLANACH</div><h3>Centrum aktualizacji</h3><p>Automatyczne aktualizacje systemu bez kombinowania.</p></div>
+      <div class="fut-card later"><div class="fut-tag t-later">🟣 PRZYSZŁOŚĆ</div><h3>OldOS Mobile</h3><p>Wersja na stare smartfony z Androidem.</p></div>
+      <div class="fut-card later"><div class="fut-tag t-later">🟣 PRZYSZŁOŚĆ</div><h3>Społeczność OldOS</h3><p>Forum, Discord i baza poradników od użytkowników.</p></div>
+    </div>
+  </div>
+</div>
+<div class="sec-alt reveal"><div class="cnt">
+  <h2>Kto to tworzy?</h2>
+  <p>OldOS to projekt otwartoźródłowy — tworzony przez pasjonatów. Każdy może dołączyć i pomóc!</p>
+  <div class="team-card">
+    <div class="av">👨‍💻</div>
+    <div><div style="font-weight:600;font-size:.95rem;">OldOS_v1</div><div style="font-size:.82rem;color:var(--mu);">Założyciel projektu · Główny developer</div></div>
+  </div>
+</div></div>
+<footer>
+  <p>© 2026 OldOS Project — Otwartoźródłowy projekt Linux oparty na Debianie</p>
+  <p><a href="https://github.com">GitHub</a> · Licencja GPL-2.0</p>
+</footer>
+</div>
+<script>
+  (function(){
+    var h=document.getElementById('hbg'),d=document.getElementById('drawer'),s=document.getElementById('scrim');
+    function o(){h.classList.add('open');d.classList.add('open');s.classList.add('open');}
+    function c(){h.classList.remove('open');d.classList.remove('open');s.classList.remove('open');}
+    h.addEventListener('click',function(){d.classList.contains('open')?c():o();});
+    s.addEventListener('click',c);
+  })();
+  (function(){
+    var els=document.querySelectorAll('.reveal');
+    var obs=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:0.1});
+    els.forEach(function(el){obs.observe(el);});
+  })();</script>
+</body></html>

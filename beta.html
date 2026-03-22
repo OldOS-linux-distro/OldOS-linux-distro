@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Beta Testerzy — OldOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    :root{--bg:#fff;--sf:#f8fafc;--sf2:#f1f5f9;--br:#e2e8f0;--ac:#2563eb;--ac2:#7c3aed;--tx:#0f172a;--mu:#64748b;--gr:#16a34a;--rd:#dc2626;--ra:12px;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);line-height:1.6;overflow-x:hidden;}
+    .wrap{padding-top:65px;}
+    .cnt{max-width:820px;margin:0 auto;padding:0 24px;}
+    .lbl{font-family:'DM Mono',monospace;font-size:.72rem;color:var(--ac);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px;}
+    h1{font-size:clamp(2.2rem,6vw,4rem);font-weight:700;letter-spacing:-.04em;line-height:1.08;margin-bottom:20px;}
+    h1 em{font-style:normal;background:linear-gradient(135deg,#2563eb,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    h2{font-size:1.5rem;font-weight:700;letter-spacing:-.02em;margin-bottom:14px;}
+    h3{font-size:1rem;font-weight:600;margin-bottom:8px;}
+    p{color:var(--mu);font-size:.93rem;margin-bottom:14px;}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:8px;font-size:.9rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all .18s;border:none;font-family:'DM Sans',sans-serif;}
+    .btn-p{background:var(--ac);color:#fff;}
+    .btn-p:hover{background:#1d4ed8;transform:translateY(-1px);}
+    .btn-g{background:transparent;color:var(--tx);border:1.5px solid var(--br);}
+    .btn-g:hover{border-color:var(--ac);color:var(--ac);}
+    footer{border-top:1px solid var(--br);padding:36px 24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:80px;}
+    footer p{font-size:.82rem;color:var(--mu);margin:0;}
+    footer a{color:var(--ac);text-decoration:none;}
+    .sec{padding:72px 0;}
+    .sec-alt{background:var(--sf);padding:72px 24px;margin:0 -24px;}
+    .reveal{opacity:0;transform:translateY(20px);transition:opacity .5s,transform .5s;}
+    .reveal.vis{opacity:1;transform:none;}
+    .g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;}
+    .card{background:var(--bg);border:1px solid var(--br);border-radius:var(--ra);padding:22px;transition:border-color .2s,transform .2s;}
+    .card:hover{border-color:var(--ac);transform:translateY(-2px);}
+    .card-ico{width:40px;height:40px;background:rgba(37,99,235,.08);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:14px;}
+
+    nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 16px 24px; display: flex; align-items: center; gap: 16px; background: rgba(255,255,255,0.96); backdrop-filter: blur(12px); border-bottom: 1px solid #e5e7eb; }
+    .logo { font-family: 'DM Mono', monospace; font-size: 1.05rem; color: #111827; text-decoration: none; font-weight: 500; }
+    .logo span { color: #2563eb; }
+    .hbg { background: none; border: none; cursor: pointer; padding: 6px; display: flex; flex-direction: column; gap: 5px; }
+    .hbg span { display: block; width: 22px; height: 2px; background: #111827; border-radius: 2px; transition: transform .3s, opacity .3s; }
+    .hbg.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hbg.open span:nth-child(2) { opacity: 0; }
+    .hbg.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .drawer { position: fixed; top: 0; left: -300px; width: 260px; height: 100%; background: #fff; z-index: 1050; padding: 80px 20px 40px; box-shadow: 8px 0 32px rgba(0,0,0,0.1); transition: left .28s cubic-bezier(.4,0,.2,1); display: flex; flex-direction: column; gap: 4px; }
+    .drawer.open { left: 0; }
+    .scrim { position: fixed; inset: 0; background: rgba(0,0,0,0.25); z-index: 1040; opacity: 0; pointer-events: none; transition: opacity .28s; }
+    .scrim.open { opacity: 1; pointer-events: all; }
+    .drawer a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 10px; text-decoration: none; color: #374151; font-size: .95rem; font-weight: 500; transition: background .15s, color .15s; }
+    .drawer a:hover { background: #f3f4f6; color: #111827; }
+    .drawer a.cur { background: #eff6ff; color: #2563eb; }
+    .drawer a.beta-lnk { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+    .drawer a.beta-lnk:hover { background: #dcfce7; }
+    .drawer hr { border: none; border-top: 1px solid #e5e7eb; margin: 6px 0; }
+    .nav-icon { font-size: 1.1rem; width: 24px; text-align: center; flex-shrink: 0; }
+.hero{padding:120px 24px 60px;text-align:center;background:linear-gradient(135deg,rgba(22,163,74,.04),rgba(37,99,235,.04));border-bottom:1px solid var(--br);}
+.beta-b{display:inline-flex;align-items:center;gap:8px;background:rgba(22,163,74,.08);border:1px solid rgba(22,163,74,.2);border-radius:100px;padding:7px 18px;font-size:.82rem;color:#16a34a;font-weight:500;margin-bottom:18px;}
+.iso-card{max-width:500px;margin:28px auto 0;border:1px solid var(--br);border-radius:var(--ra);overflow:hidden;}
+.iso-h{background:var(--sf);padding:16px 22px;border-bottom:1px solid var(--br);display:flex;justify-content:space-between;align-items:center;}
+.iso-meta{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:20px;}
+.iso-m{background:var(--sf);border-radius:8px;padding:10px 14px;}
+.iso-m .lb{font-size:.7rem;color:var(--mu);margin-bottom:3px;}
+.iso-m .vl{font-size:.86rem;font-weight:600;}
+.iso-foot{padding:0 20px 20px;}
+.cp{display:inline-flex;align-items:center;gap:8px;background:rgba(22,163,74,.08);border:1px solid rgba(22,163,74,.2);border-radius:100px;padding:7px 18px;font-size:.82rem;color:var(--gr);font-weight:500;margin-bottom:16px;}
+.rules{max-width:600px;}
+.rule{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--br);}
+.rule:last-child{border-bottom:none;}
+.rule-ico{font-size:1.2rem;flex-shrink:0;margin-top:2px;}
+.rule strong{display:block;font-size:.92rem;margin-bottom:4px;}
+.rule p{font-size:.84rem;margin:0;}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav>
+  <button class="hbg" id="hbg" aria-label="Menu"><span></span><span></span><span></span></button>
+  <a href="index.html" class="logo">Old<span>OS</span></a>
+</nav>
+<div class="scrim" id="scrim"></div>
+<div class="drawer" id="drawer">
+  <a href="index.html" class=""><span class="nav-icon">🏠</span> Strona główna</a>
+  <a href="about.html" class=""><span class="nav-icon">📖</span> O projekcie</a>
+  <hr>
+  <a href="beta.html" class="beta-lnk  cur"><span class="nav-icon">🧪</span> Beta testerzy</a>
+</div>
+<div class="hero">
+  <div class="beta-b">🧪 Wczesny dostęp</div>
+  <div class="lbl">Beta testerzy</div>
+  <h1>Testuj OldOS<br>jako <em>pierwszy</em>!</h1>
+  <p style="color:var(--mu);max-width:480px;margin:0 auto;">Dołącz do grona beta testerów — pobierz wczesną wersję systemu i pomóż nam go ulepszyć przed oficjalnym wydaniem.</p>
+</div>
+<div class="sec-alt"><div class="cnt">
+  <h2 style="text-align:center;margin-bottom:8px;">Dostępne wersje beta</h2>
+  <p style="text-align:center;max-width:420px;margin:0 auto;">Pobierz wczesną wersję OldOS. Pamiętaj — to wersja testowa, mogą w niej wystąpić błędy!</p>
+  <div class="iso-card">
+    <div class="iso-h"><span style="font-weight:600;font-size:.95rem;">OldOS Beta ISO</span><span style="font-family:'DM Mono',monospace;font-size:.8rem;color:var(--gr);">v0.1.0-beta</span></div>
+    <div class="iso-meta">
+      <div class="iso-m"><div class="lb">Rozmiar</div><div class="vl">~1.1 GB</div></div>
+      <div class="iso-m"><div class="lb">Baza</div><div class="vl">Debian Testing</div></div>
+      <div class="iso-m"><div class="lb">Data wydania</div><div class="vl">2026</div></div>
+      <div class="iso-m"><div class="lb">Status</div><div class="vl" style="color:var(--gr);">Wkrótce</div></div>
+    </div>
+    <div class="iso-foot">
+      <div class="cp">🕐 Wczesne ISO pojawi się wkrótce</div><br/>
+      <a href="https://github.com" class="btn btn-g">Obserwuj na GitHub →</a>
+    </div>
+  </div>
+</div></div>
+<div class="cnt"><div class="sec reveal">
+  <h2>Zasady beta testów</h2>
+  <p>Kilka ważnych rzeczy zanim zaczniesz testować.</p>
+  <div class="rules" style="margin-top:20px;">
+    <div class="rule"><div class="rule-ico">⚠️</div><div><strong>To wersja testowa</strong><p>Beta ISO może zawierać błędy. Nie instaluj go na komputerze z ważnymi danymi — użyj starego sprzętu lub VirtualBox.</p></div></div>
+    <div class="rule"><div class="rule-ico">🐛</div><div><strong>Zgłaszaj błędy</strong><p>Jeśli coś nie działa — napisz nam o tym na GitHubie. Każde zgłoszenie pomaga nam poprawić system.</p></div></div>
+    <div class="rule"><div class="rule-ico">💬</div><div><strong>Dziel się opinią</strong><p>Co Ci się podoba? Co działa źle? Twoja opinia jest dla nas bardzo ważna.</p></div></div>
+    <div class="rule"><div class="rule-ico">🆓</div><div><strong>Całkowicie za darmo</strong><p>Beta testy są bezpłatne. Nie pobieramy żadnych opłat za wczesny dostęp.</p></div></div>
+  </div>
+</div></div>
+<footer>
+  <p>© 2026 OldOS Project — Otwartoźródłowy projekt Linux oparty na Debianie</p>
+  <p><a href="https://github.com">GitHub</a> · Licencja GPL-2.0</p>
+</footer>
+</div>
+<script>
+  (function(){
+    var h=document.getElementById('hbg'),d=document.getElementById('drawer'),s=document.getElementById('scrim');
+    function o(){h.classList.add('open');d.classList.add('open');s.classList.add('open');}
+    function c(){h.classList.remove('open');d.classList.remove('open');s.classList.remove('open');}
+    h.addEventListener('click',function(){d.classList.contains('open')?c():o();});
+    s.addEventListener('click',c);
+  })();
+  (function(){
+    var els=document.querySelectorAll('.reveal');
+    var obs=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:0.1});
+    els.forEach(function(el){obs.observe(el);});
+  })();</script>
+</body></html>
