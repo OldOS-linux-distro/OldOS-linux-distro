@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Kontakt — OldOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#fff;color:#0f172a;line-height:1.6}
+.wrap{padding-top:64px}
+nav{position:fixed;top:0;width:100%;z-index:999;padding:14px 24px;display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid #e2e8f0}
+.hbg{background:none;border:none;cursor:pointer;padding:5px;display:flex;flex-direction:column;gap:5px}
+.hbg span{display:block;width:20px;height:2px;background:#111827;border-radius:2px;transition:transform .25s,opacity .25s}
+.hbg.on span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hbg.on span:nth-child(2){opacity:0}
+.hbg.on span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.drw{position:fixed;top:0;left:-280px;width:255px;height:100%;background:#fff;z-index:1000;padding:76px 16px 32px;box-shadow:6px 0 24px rgba(0,0,0,.09);transition:left .25s ease;display:flex;flex-direction:column;gap:3px}
+.drw.on{left:0}
+.scr{position:fixed;inset:0;background:rgba(0,0,0,.22);z-index:998;opacity:0;pointer-events:none;transition:opacity .25s}
+.scr.on{opacity:1;pointer-events:all}
+.drw a{display:flex;align-items:center;gap:11px;padding:11px 14px;border-radius:9px;text-decoration:none;color:#374151;font-size:.92rem;font-weight:500;transition:background .14s}
+.drw a:hover{background:#f3f4f6}
+.drw a.cur{background:#eff6ff;color:#2563eb}
+.drw a.bl{background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0}
+.drw hr{border:none;border-top:1px solid #e5e7eb;margin:5px 0}
+.ni{font-size:1rem;width:22px;text-align:center}
+.hero{padding:110px 24px 56px;border-bottom:1px solid #e2e8f0}
+.cnt{max-width:640px;margin:0 auto;padding:0 24px}
+.lbl{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:#2563eb;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px}
+h1{font-size:2.4rem;font-weight:700;letter-spacing:-.04em;line-height:1.1;margin-bottom:14px}
+h1 em{font-style:normal;background:linear-gradient(135deg,#2563eb,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sec{padding:56px 24px}
+.ccard{display:flex;align-items:center;gap:20px;border:1.5px solid #e2e8f0;border-radius:12px;padding:22px;text-decoration:none;color:#0f172a;background:#fff;margin-bottom:14px;transition:border-color .2s,box-shadow .2s}
+.ccard:hover{border-color:#2563eb;box-shadow:0 4px 16px rgba(37,99,235,.08)}
+.cico{width:50px;height:50px;min-width:50px;background:rgba(37,99,235,.08);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.5rem}
+.clbl{font-size:.68rem;color:#2563eb;text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-bottom:4px;font-family:'JetBrains Mono',monospace}
+.ctitle{font-size:.95rem;font-weight:600;color:#0f172a;margin-bottom:3px}
+.csub{font-size:.83rem;color:#64748b}
+.hbox{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;padding:24px;margin-top:8px}
+.hbox h3{font-size:.95rem;font-weight:600;margin-bottom:8px;color:#0f172a}
+.hbox p{font-size:.88rem;color:#64748b;margin-bottom:16px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;background:#2563eb;color:#fff;border-radius:8px;font-size:.88rem;font-weight:600;text-decoration:none}
+.btn:hover{background:#1d4ed8}
+footer{border-top:1px solid #e2e8f0;padding:32px 24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:40px}
+footer p{font-size:.8rem;color:#64748b}
+footer a{color:#2563eb;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<nav>
+  <button class="hbg" id="H"><span></span><span></span><span></span></button>
+  <a href="index.html" style="text-decoration:none;display:flex;align-items:center">
+    <svg width="80" height="28" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+      <text x="0" y="46" font-family="Georgia,serif" font-size="48" font-weight="700" letter-spacing="-2">
+        <tspan fill="#0f172a">Old</tspan><tspan fill="#2563eb">OS</tspan>
+      </text>
+    </svg>
+  </a>
+</nav>
+<div class="scr" id="S"></div>
+<div class="drw" id="D">
+  <a href="index.html"><span class="ni">🏠</span>Strona główna</a>
+  <a href="about.html"><span class="ni">📖</span>O projekcie</a>
+  <hr>
+  <a href="beta.html" class="bl"><span class="ni">🧪</span>Beta testerzy</a>
+  <a href="contact.html" class="cur"><span class="ni">✉️</span>Kontakt</a>
+</div>
+
+<div class="hero">
+  <div class="cnt">
+    <div class="lbl">Kontakt</div>
+    <h1>Skontaktuj się<br>z <em>nami</em></h1>
+    <p style="color:#64748b;font-size:1rem;max-width:480px">Masz pytanie o OldOS? Chcesz pomóc w projekcie? Napisz do nas!</p>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="cnt">
+
+    <a href="mailto:oldoscontactcenter@gmail.com" class="ccard">
+      <div class="cico">📧</div>
+      <div>
+        <div class="clbl">E-mail</div>
+        <div class="ctitle">Napisz do nas</div>
+        <div class="csub">oldoscontactcenter@gmail.com</div>
+      </div>
+    </a>
+
+    <a href="https://github.com/OldOS-linux-distro/OldOS-linux-distro-based-on-Debian" target="_blank" class="ccard">
+      <div class="cico">🐙</div>
+      <div>
+        <div class="clbl">GitHub</div>
+        <div class="ctitle">Kod źródłowy projektu</div>
+        <div class="csub">github.com/OldOS-linux-distro</div>
+      </div>
+    </a>
+
+    <div class="hbox">
+      <h3>💡 Chcesz pomóc w projekcie?</h3>
+      <p>OldOS to projekt otwartoźródłowy — każdy może dołączyć! Zgłaszaj błędy, proponuj funkcje lub pomagaj w kodowaniu.</p>
+      <a href="https://github.com/OldOS-linux-distro/OldOS-linux-distro-based-on-Debian" target="_blank" class="btn">Przejdź do GitHub →</a>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <p style="display:flex;align-items:center;gap:10px">
+    <svg width="52" height="18" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+      <text x="0" y="46" font-family="Georgia,serif" font-size="48" font-weight="700" letter-spacing="-2">
+        <tspan fill="#94a3b8">Old</tspan><tspan fill="#2563eb">OS</tspan>
+      </text>
+    </svg>
+    <span>© 2026 OldOS Project — Otwartoźródłowy projekt Linux oparty na Debianie</span>
+  </p>
+  <p><a href="https://github.com/OldOS-linux-distro/OldOS-linux-distro-based-on-Debian">GitHub</a> · Licencja GPL-2.0</p>
+</footer>
+
+</div>
+<script>
+(function(){
+  var h=document.getElementById('H'),d=document.getElementById('D'),s=document.getElementById('S');
+  function o(){h.classList.add('on');d.classList.add('on');s.classList.add('on')}
+  function c(){h.classList.remove('on');d.classList.remove('on');s.classList.remove('on')}
+  h.addEventListener('click',function(){d.classList.contains('on')?c():o()});
+  s.addEventListener('click',c);
+})();
+</script>
+</body>
+</html>
