@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>O projekcie — OldOS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --bg: #ffffff; --surface: #f4f6f9; --border: #e2e6ed; --accent: #2563eb; --accent2: #7c3aed; --text: #0f172a; --muted: #64748b; --green: #16a34a; --radius: 12px; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+    nav { position: fixed; top: 0; width: 100%; z-index: 100; padding: 18px 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.9); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+    .logo { font-family: 'DM Mono', monospace; font-size: 1.1rem; color: var(--text); text-decoration: none; letter-spacing: -0.02em; }
+    .logo span { color: var(--accent); }
+    .hamburger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; z-index: 200; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--text); border-radius: 2px; transition: all .3s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .nav-menu { position: fixed; top: 0; left: -100%; width: 280px; height: 100vh; background: #fff; z-index: 150; padding: 100px 32px 40px; box-shadow: 4px 0 24px rgba(0,0,0,0.08); transition: left .3s ease; display: flex; flex-direction: column; gap: 8px; }
+    .nav-menu.open { left: 0; }
+    .nav-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.2); z-index: 140; }
+    .nav-overlay.open { display: block; }
+    .nav-menu a { display: flex; align-items: center; gap: 12px; color: var(--text); text-decoration: none; font-size: 1rem; font-weight: 500; padding: 14px 16px; border-radius: 10px; transition: background .2s, color .2s; }
+    .nav-menu a:hover { background: var(--surface); color: var(--accent); }
+    .nav-menu a.active { background: rgba(37,99,235,0.08); color: var(--accent); }
+    .nav-menu .nav-icon { font-size: 1.2rem; width: 28px; text-align: center; }
+    .nav-menu hr { border: none; border-top: 1px solid var(--border); margin: 8px 0; }
+    .nav-menu .nav-beta { background: rgba(22,163,74,0.08); border: 1px solid rgba(22,163,74,0.2); color: var(--green) !important; }
+    .nav-menu .nav-beta:hover { background: rgba(22,163,74,0.15) !important; }
+    .page-hero { padding: 140px 5% 60px; max-width: 800px; margin: 0 auto; }
+    .page-label { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
+    .page-hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 600; letter-spacing: -0.03em; margin-bottom: 20px; }
+    .page-hero h1 em { font-style: normal; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .page-hero p { font-size: 1.05rem; color: var(--muted); max-width: 560px; }
+    .content { padding: 20px 5% 80px; max-width: 800px; margin: 0 auto; }
+    .info-block { border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; margin-bottom: 20px; }
+    .info-block h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 12px; }
+    .info-block p { color: var(--muted); font-size: 0.95rem; line-height: 1.75; }
+    .info-block p + p { margin-top: 10px; }
+    .team-card { display: flex; align-items: center; gap: 20px; border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 16px; }
+    .team-avatar { width: 52px; height: 52px; border-radius: 50%; background: rgba(37,99,235,0.08); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
+    .team-info h3 { font-size: 1rem; font-weight: 600; margin-bottom: 4px; }
+    .team-info p { font-size: 0.85rem; color: var(--muted); }
+    footer { border-top: 1px solid var(--border); padding: 40px 5%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+    footer p { font-size: 0.85rem; color: var(--muted); }
+    footer a { color: var(--accent); text-decoration: none; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .fade { animation: fadeUp .6s ease both; }
+    .fade2 { animation: fadeUp .6s .1s ease both; }
+    .fade3 { animation: fadeUp .6s .2s ease both; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  <a href="index.html" class="logo">Old<span>OS</span></a>
+</nav>
+<div class="nav-overlay" id="overlay"></div>
+<div class="nav-menu" id="navMenu">
+  <a href="index.html"><span class="nav-icon">🏠</span> Strona główna</a>
+  <a href="about.html" class="active"><span class="nav-icon">📖</span> O projekcie</a>
+  <hr>
+  <a href="beta.html" class="nav-beta"><span class="nav-icon">🧪</span> Beta testerzy</a>
+</div>
+
+<div class="page-hero">
+  <div class="page-label fade">O projekcie</div>
+  <h1 class="fade">Skąd wziął się <em>OldOS?</em></h1>
+  <p class="fade2">OldOS to projekt stworzony z prostej potrzeby — dać drugie życie starym komputerom i umożliwić granie bez wydawania pieniędzy na nowy sprzęt.</p>
+</div>
+
+<div class="content">
+  <div class="info-block fade">
+    <h2>💡 Jak to się zaczęło?</h2>
+    <p>Projekt zaczął się od jednego starego laptopa — HP EliteBook 840 G1 — który był za słaby na Windowsa 11, ale wciąż mógł służyć do grania. Zamiast go wyrzucać, postanowiliśmy stworzyć system który działa szybko na takim sprzęcie i ma wszystko czego potrzeba do grania.</p>
+    <p>OldOS to projekt otwartoźródłowy — każdy może go pobrać, używać i współtworzyć.</p>
+  </div>
+
+  <div class="info-block fade2">
+    <h2>🎯 Jaki jest cel?</h2>
+    <p>Chcemy żeby każdy — nawet ktoś kto nigdy nie używał Linuxa — mógł zainstalować OldOS i zacząć grać w kilkanaście minut. Bez skomplikowanej konfiguracji, bez płacenia za system.</p>
+    <p>Celujemy w komputery z lat 2010–2020 z minimum 2 GB RAM. To miliony urządzeń które trafiają na śmietnik, a mogą jeszcze długo służyć.</p>
+  </div>
+
+  <div class="info-block fade3">
+    <h2>🔧 Na czym jest oparty?</h2>
+    <p>OldOS bazuje na <strong>Debianie 13 (Testing)</strong> — jednym z najbardziej stabilnych systemów Linux. Używamy środowiska graficznego <strong>Openbox</strong>, które zużywa zaledwie ~50 MB pamięci RAM.</p>
+    <p>Do grania mamy wbudowane: <strong>Wine</strong> (gry windowsowe) i <strong>RetroArch</strong> (emulacja starych konsol).</p>
+  </div>
+
+  <div class="info-block fade">
+    <h2>📍 Gdzie jesteśmy teraz?</h2>
+    <p>Projekt jest w trakcie aktywnego tworzenia. Mamy już pierwsze działające ISO (v0.1) — system uruchamia się i działa. Pracujemy teraz nad pełnym pulpitem. Publiczne wydanie planujemy jako v1.0.</p>
+  </div>
+
+  <h2 style="font-size:1.2rem; font-weight:600; margin: 40px 0 16px;">👥 Zespół</h2>
+  <div class="team-card fade">
+    <div class="team-avatar">👨‍💻</div>
+    <div class="team-info">
+      <h3>Założyciel projektu</h3>
+      <p>Twórca OldOS — pasjonat Linuxa i starych komputerów. Prowadzi projekt od zera.</p>
+    </div>
+  </div>
+  <div class="team-card fade2">
+    <div class="team-avatar">🤝</div>
+    <div class="team-info">
+      <h3>Chcesz dołączyć?</h3>
+      <p>Szukamy beta testerów i współtwórców! Wejdź na stronę Beta testerzy i zgłoś się.</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2026 OldOS Project — Otwartoźródłowy projekt Linux oparty na Debianie</p>
+  <p><a href="https://github.com">GitHub</a> · Licencja GPL-2.0</p>
+</footer>
+
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const navMenu = document.getElementById('navMenu');
+  const overlay = document.getElementById('overlay');
+  function toggleMenu() { hamburger.classList.toggle('open'); navMenu.classList.toggle('open'); overlay.classList.toggle('open'); }
+  hamburger.addEventListener('click', toggleMenu);
+  overlay.addEventListener('click', toggleMenu);
+</script>
+</body>
+</html>

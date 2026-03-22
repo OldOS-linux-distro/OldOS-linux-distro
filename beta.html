@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Beta testerzy — OldOS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --bg: #ffffff; --surface: #f4f6f9; --border: #e2e6ed; --accent: #2563eb; --accent2: #7c3aed; --text: #0f172a; --muted: #64748b; --green: #16a34a; --radius: 12px; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+    nav { position: fixed; top: 0; width: 100%; z-index: 100; padding: 18px 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.9); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+    .logo { font-family: 'DM Mono', monospace; font-size: 1.1rem; color: var(--text); text-decoration: none; letter-spacing: -0.02em; }
+    .logo span { color: var(--accent); }
+    .hamburger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; z-index: 200; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--text); border-radius: 2px; transition: all .3s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .nav-menu { position: fixed; top: 0; left: -100%; width: 280px; height: 100vh; background: #fff; z-index: 150; padding: 100px 32px 40px; box-shadow: 4px 0 24px rgba(0,0,0,0.08); transition: left .3s ease; display: flex; flex-direction: column; gap: 8px; }
+    .nav-menu.open { left: 0; }
+    .nav-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.2); z-index: 140; }
+    .nav-overlay.open { display: block; }
+    .nav-menu a { display: flex; align-items: center; gap: 12px; color: var(--text); text-decoration: none; font-size: 1rem; font-weight: 500; padding: 14px 16px; border-radius: 10px; transition: background .2s, color .2s; }
+    .nav-menu a:hover { background: var(--surface); color: var(--accent); }
+    .nav-menu a.active { background: rgba(37,99,235,0.08); color: var(--accent); }
+    .nav-menu .nav-icon { font-size: 1.2rem; width: 28px; text-align: center; }
+    .nav-menu hr { border: none; border-top: 1px solid var(--border); margin: 8px 0; }
+    .nav-menu .nav-beta { background: rgba(22,163,74,0.08); border: 1px solid rgba(22,163,74,0.2); color: var(--green) !important; }
+    .nav-menu .nav-beta:hover { background: rgba(22,163,74,0.15) !important; }
+
+    .page-hero { padding: 140px 5% 60px; max-width: 800px; margin: 0 auto; text-align: center; }
+    .page-label { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--green); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
+    .page-hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 600; letter-spacing: -0.03em; margin-bottom: 20px; }
+    .page-hero h1 em { font-style: normal; background: linear-gradient(135deg, var(--green), #0d9488); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .page-hero p { font-size: 1.05rem; color: var(--muted); max-width: 520px; margin: 0 auto; }
+
+    .content { padding: 20px 5% 80px; max-width: 800px; margin: 0 auto; }
+
+    .beta-banner { background: rgba(22,163,74,0.06); border: 1px solid rgba(22,163,74,0.25); border-radius: var(--radius); padding: 24px 28px; margin-bottom: 32px; display: flex; gap: 16px; align-items: flex-start; }
+    .beta-banner .icon { font-size: 2rem; flex-shrink: 0; }
+    .beta-banner h3 { font-size: 1rem; font-weight: 600; color: var(--green); margin-bottom: 6px; }
+    .beta-banner p { font-size: 0.9rem; color: var(--muted); }
+
+    .perks-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 40px; }
+    .perk { border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+    .perk .perk-icon { font-size: 1.5rem; margin-bottom: 12px; }
+    .perk h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 6px; }
+    .perk p { font-size: 0.85rem; color: var(--muted); }
+
+    .iso-card { border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; margin-bottom: 24px; }
+    .iso-card h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; }
+    .iso-card p { font-size: 0.9rem; color: var(--muted); margin-bottom: 20px; }
+    .iso-meta { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+    .iso-tag { font-family: 'DM Mono', monospace; font-size: 0.75rem; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; color: var(--muted); }
+    .coming-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(22,163,74,0.08); border: 1px solid rgba(22,163,74,0.2); border-radius: 100px; padding: 8px 20px; font-size: 0.85rem; color: var(--green); font-weight: 500; }
+
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 28px; border-radius: 8px; font-size: 0.95rem; font-weight: 500; cursor: pointer; text-decoration: none; transition: all .2s; border: none; font-family: 'DM Sans', sans-serif; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: #1d4ed8; transform: translateY(-1px); }
+    .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+    .btn-green { background: var(--green); color: #fff; }
+    .btn-green:hover { background: #15803d; transform: translateY(-1px); }
+
+    .signup-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 40px; text-align: center; margin-top: 40px; }
+    .signup-box h2 { font-size: 1.3rem; font-weight: 600; margin-bottom: 10px; }
+    .signup-box p { color: var(--muted); font-size: 0.95rem; margin-bottom: 24px; }
+    .signup-form { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .signup-form input { flex: 1; min-width: 220px; max-width: 320px; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 13px 18px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.95rem; outline: none; transition: border-color .2s; }
+    .signup-form input:focus { border-color: var(--green); }
+    #beta-msg { margin-top: 14px; font-size: 0.85rem; color: var(--green); display: none; }
+
+    footer { border-top: 1px solid var(--border); padding: 40px 5%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+    footer p { font-size: 0.85rem; color: var(--muted); }
+    footer a { color: var(--accent); text-decoration: none; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .fade { animation: fadeUp .6s ease both; }
+    .fade2 { animation: fadeUp .6s .1s ease both; }
+    .fade3 { animation: fadeUp .6s .2s ease both; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  <a href="index.html" class="logo">Old<span>OS</span></a>
+</nav>
+<div class="nav-overlay" id="overlay"></div>
+<div class="nav-menu" id="navMenu">
+  <a href="index.html"><span class="nav-icon">🏠</span> Strona główna</a>
+  <a href="about.html"><span class="nav-icon">📖</span> O projekcie</a>
+  <hr>
+  <a href="beta.html" class="active nav-beta"><span class="nav-icon">🧪</span> Beta testerzy</a>
+</div>
+
+<div class="page-hero">
+  <div class="page-label fade">🧪 Beta testerzy</div>
+  <h1 class="fade">Wypróbuj OldOS <em>jako pierwszy</em></h1>
+  <p class="fade2">Dołącz do grona beta testerów — otrzymasz wcześniejszy dostęp do ISO systemu i będziesz mieć realny wpływ na jego rozwój.</p>
+</div>
+
+<div class="content">
+
+  <div class="beta-banner fade">
+    <div class="icon">🎉</div>
+    <div>
+      <h3>Program beta jest otwarty!</h3>
+      <p>Zapisz się poniżej a wyślemy Ci e-mail gdy pierwsze beta ISO będzie gotowe do pobrania. Twoja opinia pomoże nam ulepszyć system przed publicznym wydaniem.</p>
+    </div>
+  </div>
+
+  <div class="perks-grid fade2">
+    <div class="perk">
+      <div class="perk-icon">⚡</div>
+      <h3>Wcześniejszy dostęp</h3>
+      <p>Pobierasz ISO zanim trafi do publicznego wydania — nawet kilka tygodni wcześniej.</p>
+    </div>
+    <div class="perk">
+      <div class="perk-icon">💬</div>
+      <h3>Bezpośredni kontakt</h3>
+      <p>Twoje uwagi trafiają bezpośrednio do twórcy. Masz realny wpływ na to jak wygląda system.</p>
+    </div>
+    <div class="perk">
+      <div class="perk-icon">🏅</div>
+      <h3>Podziękowania</h3>
+      <p>Beta testerzy zostaną wymienieni w credits projektu przy publicznym wydaniu v1.0.</p>
+    </div>
+    <div class="perk">
+      <div class="perk-icon">🆓</div>
+      <h3>Całkowicie za darmo</h3>
+      <p>Program beta jest bezpłatny. Nie potrzebujesz nic płacić — wystarczy chęć testowania.</p>
+    </div>
+  </div>
+
+  <h2 style="font-size:1.2rem; font-weight:600; margin-bottom:16px;">📥 Dostępne wersje beta</h2>
+
+  <div class="iso-card fade3">
+    <h2>OldOS Beta v0.1</h2>
+    <p>Pierwsze działające ISO — system uruchamia się i działa. Wersja testowa, mogą występować błędy.</p>
+    <div class="iso-meta">
+      <span class="iso-tag">~1.1 GB</span>
+      <span class="iso-tag">Debian 13 Testing</span>
+      <span class="iso-tag">Openbox</span>
+    </div>
+    <div class="coming-pill">🕐 Dostępne wkrótce dla beta testerów</div>
+  </div>
+
+  <div class="signup-box fade">
+    <h2>Zapisz się na beta dostęp</h2>
+    <p>Wpisz swój e-mail — wyślemy Ci link do pobrania gdy beta ISO będzie gotowe.</p>
+    <div class="signup-form">
+      <input type="email" id="beta-email" placeholder="twoj@email.com" />
+      <button class="btn btn-green" onclick="handleBeta()">Dołącz do bety 🧪</button>
+    </div>
+    <p id="beta-msg">✓ Zapisano! Wyślemy Ci e-mail gdy beta ISO będzie gotowe.</p>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2026 OldOS Project — Otwartoźródłowy projekt Linux oparty na Debianie</p>
+  <p><a href="https://github.com">GitHub</a> · Licencja GPL-2.0</p>
+</footer>
+
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const navMenu = document.getElementById('navMenu');
+  const overlay = document.getElementById('overlay');
+  function toggleMenu() { hamburger.classList.toggle('open'); navMenu.classList.toggle('open'); overlay.classList.toggle('open'); }
+  hamburger.addEventListener('click', toggleMenu);
+  overlay.addEventListener('click', toggleMenu);
+
+  function handleBeta() {
+    const input = document.getElementById('beta-email');
+    const msg = document.getElementById('beta-msg');
+    const email = input.value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { input.style.borderColor = '#ef4444'; input.focus(); return; }
+    const list = JSON.parse(localStorage.getItem('oldos_beta') || '[]');
+    if (!list.includes(email)) list.push(email);
+    localStorage.setItem('oldos_beta', JSON.stringify(list));
+    input.value = ''; input.style.borderColor = 'var(--border)';
+    msg.style.display = 'block';
+  }
+  document.getElementById('beta-email').addEventListener('keydown', e => { if (e.key === 'Enter') handleBeta(); });
+</script>
+</body>
+</html>

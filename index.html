@@ -10,14 +10,14 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #0c0c0e;
-      --surface: #131316;
-      --border: #222228;
-      --accent: #5b9cf6;
-      --accent2: #a78bfa;
-      --text: #e8e8f0;
-      --muted: #6b6b80;
-      --green: #4ade80;
+      --bg: #ffffff;
+      --surface: #f4f6f9;
+      --border: #e2e6ed;
+      --accent: #2563eb;
+      --accent2: #7c3aed;
+      --text: #0f172a;
+      --muted: #64748b;
+      --green: #16a34a;
       --radius: 12px;
     }
 
@@ -36,7 +36,7 @@
       position: fixed; top: 0; width: 100%; z-index: 100;
       padding: 18px 5%;
       display: flex; justify-content: space-between; align-items: center;
-      background: rgba(12,12,14,0.85);
+      background: rgba(255,255,255,0.9);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
     }
@@ -54,6 +54,38 @@
     nav a { color: var(--muted); text-decoration: none; font-size: 0.9rem; transition: color .2s; }
     nav a:hover { color: var(--text); }
 
+    /* HAMBURGER */
+    .hamburger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; z-index: 200; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--text); border-radius: 2px; transition: all .3s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .nav-menu {
+      position: fixed; top: 0; left: -100%; width: 280px; height: 100vh;
+      background: #fff; z-index: 150; padding: 100px 32px 40px;
+      box-shadow: 4px 0 24px rgba(0,0,0,0.08);
+      transition: left .3s ease; display: flex; flex-direction: column; gap: 8px;
+    }
+    .nav-menu.open { left: 0; }
+    .nav-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.2); z-index: 140; }
+    .nav-overlay.open { display: block; }
+
+    .nav-menu a {
+      display: flex; align-items: center; gap: 12px;
+      color: var(--text); text-decoration: none; font-size: 1rem; font-weight: 500;
+      padding: 14px 16px; border-radius: 10px; transition: background .2s, color .2s;
+    }
+    .nav-menu a:hover { background: var(--surface); color: var(--accent); }
+    .nav-menu a.active { background: rgba(37,99,235,0.08); color: var(--accent); }
+    .nav-menu .nav-icon { font-size: 1.2rem; width: 28px; text-align: center; }
+    .nav-menu hr { border: none; border-top: 1px solid var(--border); margin: 8px 0; }
+    .nav-menu .nav-beta {
+      background: rgba(22,163,74,0.08); border: 1px solid rgba(22,163,74,0.2);
+      color: var(--green) !important;
+    }
+    .nav-menu .nav-beta:hover { background: rgba(22,163,74,0.15) !important; }
+
     /* HERO */
     .hero {
       min-height: 100vh;
@@ -67,15 +99,15 @@
       content: '';
       position: absolute; inset: 0;
       background:
-        radial-gradient(ellipse 60% 50% at 50% 0%, rgba(91,156,246,0.08) 0%, transparent 70%),
-        radial-gradient(ellipse 40% 40% at 80% 80%, rgba(167,139,250,0.05) 0%, transparent 60%);
+        radial-gradient(ellipse 60% 50% at 50% 0%, rgba(37,99,235,0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 80% 80%, rgba(124,58,237,0.04) 0%, transparent 60%);
       pointer-events: none;
     }
 
     .badge {
       display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(91,156,246,0.08);
-      border: 1px solid rgba(91,156,246,0.2);
+      background: rgba(37,99,235,0.08);
+      border: 1px solid rgba(37,99,235,0.2);
       border-radius: 100px;
       padding: 6px 16px;
       font-size: 0.8rem;
@@ -142,7 +174,7 @@
       background: var(--accent);
       color: #fff;
     }
-    .btn-primary:hover { background: #7ab0f8; transform: translateY(-1px); }
+    .btn-primary:hover { background: #1d4ed8; transform: translateY(-1px); }
 
     .btn-ghost {
       background: transparent;
@@ -205,16 +237,13 @@
 
     .feature-card {
       background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 28px;
       transition: border-color .2s, transform .2s;
     }
     .feature-card:hover { border-color: var(--accent); transform: translateY(-2px); }
 
     .feature-icon {
       width: 44px; height: 44px;
-      background: rgba(91,156,246,0.1);
+      background: rgba(37,99,235,0.08);
       border-radius: 10px;
       display: flex; align-items: center; justify-content: center;
       font-size: 1.3rem;
@@ -395,22 +424,26 @@
 
 <!-- NAV -->
 <nav>
-  <a href="#" class="logo">Old<span>OS</span></a>
-  <ul>
-    <li><a href="#why">Dlaczego?</a></li>
-    <li><a href="#specs">Specyfikacja</a></li>
-    <li><a href="#roadmap">Roadmapa</a></li>
-    <li><a href="#changelog">Changelog</a></li>
-    <li><a href="#download">Pobierz</a></li>
-  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <a href="index.html" class="logo">Old<span>OS</span></a>
 </nav>
+
+<div class="nav-overlay" id="overlay"></div>
+<div class="nav-menu" id="navMenu">
+  <a href="index.html" class="active"><span class="nav-icon">🏠</span> Strona główna</a>
+  <a href="about.html"><span class="nav-icon">📖</span> O projekcie</a>
+  <hr>
+  <a href="beta.html" class="nav-beta"><span class="nav-icon">🧪</span> Beta testerzy</a>
+</div>
 
 <!-- HERO -->
 <section class="hero">
   <div class="badge"><span class="dot"></span> v1.0 — w trakcie tworzenia</div>
-  <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(167,139,250,0.08); border:1px solid rgba(167,139,250,0.2); border-radius:100px; padding:5px 14px; font-size:0.78rem; color:var(--accent2); font-family:'DM Mono',monospace; margin-bottom:24px;">🐧 Oparty na Debianie</div>
+  <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(124,58,237,0.08); border:1px solid rgba(124,58,237,0.2); border-radius:100px; padding:5px 14px; font-size:0.78rem; color:var(--accent2); font-family:'DM Mono',monospace; margin-bottom:24px;">🐧 Oparty na Debianie</div>
   <h1>Linux dla <em>starych</em><br>maszyn. Do grania.</h1>
-  <p class="hero-sub">OldOS to lekka dystrybucja oparta na Debian, stworzona z myślą o starszym sprzęcie. Openbox, Wine, RetroArch — i nic zbędnego.</p>
+  <p class="hero-sub">OldOS to darmowy system operacyjny dla starych komputerów. Instalujesz go zamiast Windowsa — i możesz grać w gry bez kupowania nowego sprzętu.</p>
   <div class="hero-actions">
     <a href="#download" class="btn btn-primary">↓ Pobierz ISO</a>
     <a href="https://github.com" class="btn btn-ghost">GitHub →</a>
@@ -427,38 +460,38 @@
 <!-- WHY OLDOS -->
 <section id="why">
   <div class="section-label">Dlaczego OldOS?</div>
-  <h2 class="section-title">Zbudowany dla graczy<br>ze starym sprzętem</h2>
-  <p class="section-sub">OldOS to lekka dystrybucja Linuxa oparta na Debianie 13, stworzona specjalnie dla graczy z komputerami sprzed lat. Gotowa do grania od razu po instalacji — bez konfiguracji, bez kombinowania.</p>
+  <h2 class="section-title">Dla każdego kto ma<br>stary komputer</h2>
+  <p class="section-sub">Masz stary laptop który ledwo chodzi? OldOS da mu drugie życie. Nie trzeba znać się na komputerach — po prostu instalujesz i grasz.</p>
   <div class="features-grid reveal">
     <div class="feature-card">
       <div class="feature-icon">🎮</div>
-      <h3>Gaming out-of-the-box</h3>
-      <p>Wine i RetroArch preinstalowane. Uruchamiaj gry Windows i klasyki bez żadnej dodatkowej konfiguracji.</p>
+      <h3>Gry od razu po instalacji</h3>
+      <p>OldOS ma już wbudowane narzędzia do grania. Możesz uruchamiać gry windowsowe i stare klasyki bez żadnych dodatkowych kroków.</p>
     </div>
     <div class="feature-card">
       <div class="feature-icon">⚡</div>
-      <h3>Ekstremalnie lekki</h3>
-      <p>Openbox zużywa tylko ~50 MB RAM. Więcej zasobów dla gier, zero zbędnych procesów w tle.</p>
+      <h3>Działa szybko nawet na słabym sprzęcie</h3>
+      <p>System zajmuje bardzo mało pamięci — dzięki temu gry mają więcej miejsca do działania i komputer nie zwalnia.</p>
     </div>
     <div class="feature-card">
       <div class="feature-icon">🙋</div>
-      <h3>Prosty dla każdego</h3>
-      <p>Nie musisz znać Linuxa żeby grać. OldOS jest zaprojektowany tak, żeby działał od razu.</p>
+      <h3>Nie musisz znać się na IT</h3>
+      <p>OldOS jest zaprojektowany tak, żeby każdy mógł go używać. Instalujesz, włączasz i grasz — bez skomplikowanej konfiguracji.</p>
     </div>
     <div class="feature-card">
       <div class="feature-icon">💻</div>
-      <h3>Stary sprzęt = OK</h3>
-      <p>Intel Core gen. 4, 2–4 GB RAM — tyle wystarczy. Nie wyrzucaj starego laptopa, daj mu drugie życie.</p>
+      <h3>Stary laptop wystarczy</h3>
+      <p>Komputer sprzed 10 lat z 2–4 GB pamięci RAM? W zupełności wystarczy. Nie musisz kupować nowego sprzętu.</p>
     </div>
     <div class="feature-card">
       <div class="feature-icon">🐧</div>
-      <h3>Debian 13 Testing</h3>
-      <p>Solidna, sprawdzona baza z nowoczesnymi sterownikami i szerokim wsparciem sprzętowym.</p>
+      <h3>Oparty na sprawdzonym systemie</h3>
+      <p>OldOS bazuje na Debianie — jednym z najbardziej stabilnych i bezpiecznych systemów Linux na świecie.</p>
     </div>
     <div class="feature-card">
       <div class="feature-icon">🆓</div>
-      <h3>Całkowicie darmowy</h3>
-      <p>Open source, licencja GPL-2.0. Pobierz, używaj, modyfikuj — bez żadnych opłat.</p>
+      <h3>Całkowicie za darmo</h3>
+      <p>Zero opłat, zero subskrypcji. Pobierasz, instalujesz i używasz — na zawsze bezpłatnie.</p>
     </div>
   </div>
 </section>
@@ -467,40 +500,41 @@
 <section id="specs">
   <div class="section-label">Specyfikacja</div>
   <h2 class="section-title">Co jest w środku?</h2>
-  <p class="section-sub">Starannie dobrane komponenty — nic więcej, nic mniej.</p>
+  <p class="section-sub">Wszystko dobrane tak żeby stary komputer działał jak najszybciej.</p>
   <div class="specs-grid reveal">
     <div class="spec-block">
       <h4>Minimalne wymagania</h4>
       <ul>
-        <li>Intel Core i5/i7 gen. 4</li>
-        <li>Minimum 2–4 GB RAM</li>
-        <li>Dysk HDD lub SSD</li>
+        <li>Dowolny procesor Intel lub AMD (2010–2020)</li>
+        <li>Minimum 2 GB pamięci RAM</li>
+        <li>15 GB miejsca na dysku</li>
+        <li>Dysk twardy (HDD) lub szybszy (SSD)</li>
       </ul>
     </div>
     <div class="spec-block">
-      <h4>Środowisko graficzne</h4>
+      <h4>Wygląd systemu</h4>
       <ul>
-        <li>Openbox (window manager)</li>
-        <li>lxpanel (pasek zadań)</li>
-        <li>PCManFM (menedżer plików)</li>
-        <li>~50 MB RAM w spoczynku</li>
+        <li>Openbox — bardzo szybki pulpit</li>
+        <li>Pasek zadań na dole ekranu</li>
+        <li>Menedżer plików (jak Eksplorator w Windows)</li>
+        <li>Zużywa tylko ~50 MB pamięci w spoczynku</li>
       </ul>
     </div>
     <div class="spec-block">
-      <h4>Gaming</h4>
+      <h4>Granie</h4>
       <ul>
-        <li>Wine (gry Windows)</li>
-        <li>RetroArch (emulacja retro)</li>
-        <li>Obsługa joysticka i gamepada</li>
+        <li>Gry windowsowe (przez Wine)</li>
+        <li>Stare klasyki i retro gry (RetroArch)</li>
+        <li>Obsługa pada i joysticka</li>
       </ul>
     </div>
     <div class="spec-block">
       <h4>System</h4>
       <ul>
-        <li>Baza: Debian Testing</li>
-        <li>NetworkManager</li>
-        <li>nano, htop, curl, wget</li>
-        <li>ISO: ~1.1 GB</li>
+        <li>Oparty na Debianie (stabilny Linux)</li>
+        <li>Łatwe połączenie z Wi-Fi</li>
+        <li>Podstawowe narzędzia w zestawie</li>
+        <li>Rozmiar instalatora: ~1.1 GB</li>
       </ul>
     </div>
   </div>
@@ -510,11 +544,20 @@
 <section id="screenshots" style="background: var(--surface);">
   <div class="section-label">Galeria</div>
   <h2 class="section-title">Jak wygląda OldOS?</h2>
-  <p class="section-sub">Screenshots zostaną dodane gdy system będzie gotowy.</p>
+  <p class="section-sub">Prawdziwe screenshoty pojawią się gdy system będzie gotowy. Na razie podgląd klimatu!</p>
   <div class="screenshots-grid reveal">
-    <div class="screenshot-placeholder"><span class="ss-icon">🖥️</span><span>Pulpit Openbox — wkrótce</span></div>
-    <div class="screenshot-placeholder"><span class="ss-icon">🎮</span><span>RetroArch w akcji — wkrótce</span></div>
-    <div class="screenshot-placeholder"><span class="ss-icon">📁</span><span>PCManFM — wkrótce</span></div>
+    <div style="border-radius:var(--radius); overflow:hidden; border:1px solid var(--border); position:relative;">
+      <img src="https://images.unsplash.com/photo-1629654297299-c8506221ca97?w=600&q=80" alt="Pulpit Linux" style="width:100%; display:block; aspect-ratio:16/10; object-fit:cover;" />
+      <div style="position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.55); color:#fff; font-size:0.8rem; padding:8px 14px; backdrop-filter:blur(4px);">🖥️ Pulpit — wkrótce prawdziwy screenshot</div>
+    </div>
+    <div style="border-radius:var(--radius); overflow:hidden; border:1px solid var(--border); position:relative;">
+      <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&q=80" alt="Gaming retro" style="width:100%; display:block; aspect-ratio:16/10; object-fit:cover;" />
+      <div style="position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.55); color:#fff; font-size:0.8rem; padding:8px 14px; backdrop-filter:blur(4px);">🎮 Granie — wkrótce prawdziwy screenshot</div>
+    </div>
+    <div style="border-radius:var(--radius); overflow:hidden; border:1px solid var(--border); position:relative;">
+      <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80" alt="System plików" style="width:100%; display:block; aspect-ratio:16/10; object-fit:cover;" />
+      <div style="position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.55); color:#fff; font-size:0.8rem; padding:8px 14px; backdrop-filter:blur(4px);">📁 Menedżer plików — wkrótce prawdziwy screenshot</div>
+    </div>
   </div>
 </section>
 
@@ -625,29 +668,24 @@
 <section id="install">
   <div class="section-label">Instalacja</div>
   <h2 class="section-title">Jak zacząć?</h2>
-  <p class="section-sub">Cztery kroki i masz gotowy system do grania.</p>
+  <p class="section-sub">Cztery proste kroki i masz gotowy system do grania. Nie potrzebujesz żadnej wiedzy technicznej.</p>
   <div class="install-steps reveal">
     <div class="step">
-      <h3>Pobierz ISO</h3>
-      <p>Ściągnij obraz dysku OldOS z naszej strony na SourceForge.</p>
+      <h3>Pobierz plik instalacyjny</h3>
+      <p>Pobierz plik OldOS (tzw. ISO) z naszej strony. To jak pobranie zwykłego pliku z internetu.</p>
     </div>
     <div class="step">
-      <h3>Nagraj na USB</h3>
-      <p>Użyj Balena Etcher lub Rufus, żeby nagrać ISO na pendrive (min. 4 GB).</p>
+      <h3>Nagraj na pendrive</h3>
+      <p>Użyj darmowego programu Balena Etcher — przeciągasz plik, wybierasz pendrive i klikasz "Flash". Gotowe.</p>
     </div>
     <div class="step">
-      <h3>Uruchom z USB</h3>
-      <p>Zrestartuj komputer i wybierz pendrive jako urządzenie startowe w BIOS/UEFI.</p>
+      <h3>Uruchom z pendrive</h3>
+      <p>Włóż pendrive do komputera, zrestartuj go i wybierz uruchomienie z pendrive. Program pokaże Ci jak to zrobić.</p>
     </div>
     <div class="step">
       <h3>Zainstaluj</h3>
-      <p>Postępuj zgodnie z instalatorem. Cały proces zajmuje kilkanaście minut.</p>
+      <p>Postępuj zgodnie z instrukcjami na ekranie. Cały proces zajmuje około 15–20 minut.</p>
     </div>
-  </div>
-  <div class="code-block reveal">
-    <span class="line comment"># Nagrywanie ISO na USB przez terminal (Linux/macOS)</span>
-    <span class="line"><span class="cmd">sudo dd</span> if=oldos-v1.0.iso of=/dev/sdX bs=4M status=progress</span>
-    <span class="line comment"># Lub użyj Balena Etcher — jest prostszy dla początkujących</span>
   </div>
 </section>
 
@@ -655,39 +693,16 @@
 <section id="download">
   <div class="section-label">Pobierz</div>
   <h2 class="section-title">Gotowy na OldOS?</h2>
-  <p class="section-sub" style="margin: 0 auto 48px;">Publiczne ISO pojawi się wkrótce na SourceForge. Śledź nas na GitHub żeby nie przegapić!</p>
+  <p class="section-sub" style="margin: 0 auto 48px;">System jest w trakcie tworzenia. Publiczna wersja pojawi się wkrótce — obserwuj nas na GitHub żeby nie przegapić!</p>
   <div class="download-card reveal">
     <div class="version-badge">OldOS v1.0</div>
-    <h3>OldOS ISO</h3>
-    <p>Lekka dystrybucja Linux dla starych komputerów. ~1.1 GB, bazuje na Debian Testing.</p>
+    <h3>OldOS — darmowy system dla starych PC</h3>
+    <p>Instalujesz zamiast Windowsa, grasz od razu. Bezpłatnie, na zawsze.</p>
     <div class="coming-pill">🕐 Dostępny wkrótce</div>
     <br/>
     <a href="https://github.com" class="btn btn-ghost" style="display:inline-flex;">Obserwuj na GitHub →</a>
-    <p class="download-meta">Po wydaniu będzie dostępny bezpłatnie na SourceForge i GitHub Releases.</p>
+    <p class="download-meta">Po wydaniu będzie dostępny bezpłatnie do pobrania.</p>
   </div>
-</section>
-
-<!-- EMAIL SIGNUP -->
-<section id="notify" style="background: var(--bg); text-align: center; padding: 80px 5%;">
-  <div class="section-label">Powiadomienie</div>
-  <h2 class="section-title">Chcesz zostać powiadomiony?</h2>
-  <p class="section-sub" style="margin: 0 auto 36px;">Wpisz swój e-mail poniżej — wyślemy Ci wiadomość, gdy system będzie dostępny.</p>
-  <div id="notify-form" class="reveal" style="max-width: 440px; margin: 0 auto; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
-    <input id="notify-email" type="email" placeholder="twoj@email.com" style="
-      flex: 1; min-width: 220px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 13px 18px;
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.95rem;
-      outline: none;
-      transition: border-color .2s;
-    " onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'" />
-    <button onclick="handleNotify()" class="btn btn-primary" style="white-space: nowrap;">Powiadom mnie</button>
-  </div>
-  <p id="notify-msg" style="margin-top: 16px; font-size: 0.85rem; color: var(--green); display: none;"></p>
 </section>
 
 <!-- FOOTER -->
@@ -697,41 +712,22 @@
 </footer>
 
 <script>
-  // Scroll reveal
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.1 });
   reveals.forEach(el => observer.observe(el));
 
-  // Email notify
-  function handleNotify() {
-    const input = document.getElementById('notify-email');
-    const msg = document.getElementById('notify-msg');
-    const email = input.value.trim();
-    const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
-    if (!valid) {
-      input.style.borderColor = '#f87171';
-      input.focus();
-      return;
-    }
-
-    // Save to localStorage
-    const list = JSON.parse(localStorage.getItem('oldos_notify') || '[]');
-    if (!list.includes(email)) list.push(email);
-    localStorage.setItem('oldos_notify', JSON.stringify(list));
-
-    input.value = '';
-    input.style.borderColor = 'var(--border)';
-    msg.textContent = '✓ Świetnie! Wyślemy Ci e-mail gdy OldOS będzie gotowy.';
-    msg.style.display = 'block';
-    setTimeout(() => { msg.style.display = 'none'; }, 5000);
+  const hamburger = document.getElementById('hamburger');
+  const navMenu = document.getElementById('navMenu');
+  const overlay = document.getElementById('overlay');
+  function toggleMenu() {
+    hamburger.classList.toggle('open');
+    navMenu.classList.toggle('open');
+    overlay.classList.toggle('open');
   }
-
-  document.getElementById('notify-email').addEventListener('keydown', e => {
-    if (e.key === 'Enter') handleNotify();
-  });
+  hamburger.addEventListener('click', toggleMenu);
+  overlay.addEventListener('click', toggleMenu);
 </script>
 </body>
 </html>
