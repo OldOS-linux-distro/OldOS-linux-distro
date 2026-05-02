@@ -2,56 +2,69 @@
 
 # OldOS
 
-**Lekki system Linux stworzony do grania na starym sprzęcie**
+**Lekki Linux do grania na starszym sprzęcie**
 
-![Version](https://img.shields.io/badge/wersja-v0.1--beta-blue)
-![Debian](https://img.shields.io/badge/baza-Debian%2012%20Stable-red)
-![License](https://img.shields.io/badge/licencja-GPL--2.0-green)
+![Wersja](https://img.shields.io/badge/wersja-v0.1--beta-blue)
+![Baza](https://img.shields.io/badge/baza-Debian%2012%20Stable-red)
+![Licencja](https://img.shields.io/badge/licencja-GPL--2.0-green)
 ![Status](https://img.shields.io/badge/status-w%20trakcie%20tworzenia-orange)
 
-[Strona internetowa](https://oldos-linux-distro.github.io/OldOS-linux-distro-based-on-Debian/) · [Pobierz ISO](#pobierz) · [Kontakt](mailto:oldoscontactcenter@gmail.com)
+[Strona projektu](https://oldos-linux-distro.github.io/OldOS-linux-distro-based-on-Debian/) · [Pobieranie](#pobieranie) · [Kontakt](#kontakt)
 
 </div>
 
 ---
 
-## Co to jest OldOS?
+## O projekcie
 
-OldOS to darmowy system operacyjny oparty na Linuxie, stworzony z myślą o starych komputerach. Daj drugie życie swojemu sprzętowi i graj bez kupowania nowego.
+OldOS to darmowa dystrybucja Linuxa oparta na Debianie 12 Stable.
+Projekt jest tworzony z myślą o starszych komputerach, żeby działały szybciej i nadawały się do codziennego grania bez inwestowania w nowy sprzęt.
+
+## Dla kogo jest OldOS?
+
+- dla osób ze starszym laptopem lub PC,
+- dla graczy, którzy chcą uruchamiać starsze gry,
+- dla użytkowników szukających lekkiego i prostego systemu.
 
 ## Minimalne wymagania
 
 | Komponent | Wymaganie |
-|-----------|-----------|
-| Procesor | Intel lub AMD (2015–2020 lub nowsze) |
-| RAM | Minimum 4 GB |
-| Dysk | 30 GB wolnego miejsca |
-| System | HDD lub SSD(najlepiej SSD) |
+|---|---|
+| Procesor | Intel lub AMD (około 2010–2020) |
+| RAM | minimum 2 GB (zalecane 4 GB) |
+| Dysk | minimum 15 GB wolnego miejsca |
+| Nośnik | HDD lub SSD (zalecany SSD) |
 
 ## Co zawiera system?
 
-- **Środowisko graficzne** — Openbox (~50 MB RAM w spoczynku)
-- **Pasek zadań** — lxpanel
-- **Menedżer plików** — PCManFM
-- **Gaming** — Wine + RetroArch preinstalowane
-- **Sieć** — NetworkManager
-- **Baza** — Debian 12 Stable
+- **Środowisko graficzne:** Openbox (lekki i szybki)
+- **Panel:** lxpanel
+- **Menedżer plików:** PCManFM
+- **Gaming:** Wine + RetroArch
+- **Sieć:** NetworkManager
+- **Baza systemu:** Debian 12 Stable
 
+## Status projektu
 
-## Pobierz
+Projekt jest aktywnie rozwijany.
+Publiczne ISO **nie jest jeszcze dostępne**, ale pojawi się po stabilizacji wydania.
 
-> Publiczne ISO pojawi się wkrótce na GitHub Releases.
+## Pobieranie
 
-Obserwuj repozytorium żeby nie przegapić wydania!
+> Publiczne ISO zostanie udostępnione w GitHub Releases.
+
+Jeśli chcesz być na bieżąco, obserwuj repozytorium:
+
+- https://github.com/OldOS-linux-distro/OldOS-linux-distro-based-on-Debian
 
 ## Kontakt
 
-- Email: oldoscontactcenter@gmail.com
-- Strona: [oldos-linux-distro.github.io](https://oldos-linux-distro.github.io/OldOS-linux-distro-based-on-Debian/)
+- E-mail: oldoscontactcenter@gmail.com
+- Strona: https://oldos-linux-distro.github.io/OldOS-linux-distro-based-on-Debian/
 
 ## Licencja
 
-GPL-2.0 — projekt otwartoźródłowy, darmowy na zawsze.
+Projekt jest udostępniany na licencji **GPL-2.0**.
 
 ---
 
