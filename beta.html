@@ -61,6 +61,7 @@ nav{position:fixed;top:0;width:100%;z-index:999;padding:14px 32px;display:flex;a
   <ul class="nl">
     <li><a href="index.html">Home</a></li>
     <li><a href="about.html">About</a></li>
+    <li><a href="downloads.html">Downloads</a></li>
     <li><a href="beta.html" class="on">Beta testers</a></li>
     <li><a href="contact.html">Contact</a></li>
   </ul>
@@ -70,13 +71,12 @@ nav{position:fixed;top:0;width:100%;z-index:999;padding:14px 32px;display:flex;a
 
 <div class="scr" id="S"></div>
 <div class="drw" id="D">
-
-<a href="index.html">Home</a>
-<a href="about.html">About</a>
-<hr>
-<a href="beta.html" class="bl on">Beta testers</a>
-<a href="contact.html">Contact</a>
-
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="downloads.html">Downloads</a>
+  <hr>
+  <a href="beta.html" class="bl on">Beta testers</a>
+  <a href="contact.html">Contact</a>
 </div>
 
 <div style="padding:120px 24px 60px;text-align:center;position:relative;overflow:hidden;border-bottom:1px solid var(--br)">
@@ -117,12 +117,12 @@ nav{position:fixed;top:0;width:100%;z-index:999;padding:14px 32px;display:flex;a
 
     <div style="background:var(--s1);border-radius:8px;padding:10px 13px">
       <div style="font-size:.68rem;color:var(--mu);margin-bottom:3px">Size</div>
-      <div style="font-size:.85rem;font-weight:600">~10 GB</div>
+      <div style="font-size:.85rem;font-weight:600">Placeholder</div>
     </div>
 
     <div style="background:var(--s1);border-radius:8px;padding:10px 13px">
       <div style="font-size:.68rem;color:var(--mu);margin-bottom:3px">Base</div>
-      <div style="font-size:.85rem;font-weight:600">Linux from scratch</div>
+      <div style="font-size:.85rem;font-weight:600">Debian 13 Testing</div>
     </div>
 
     <div style="background:var(--s1);border-radius:8px;padding:10px 13px">
@@ -143,7 +143,7 @@ nav{position:fixed;top:0;width:100%;z-index:999;padding:14px 32px;display:flex;a
     </div>
     <br>
 
-    <a href="https://github.com/OldOS-linux-distro/OldOS-linux-distro/" target="_blank" class="btn bg">
+    <a href="https://github.com/OldOS-linux-distro/OldOS-linux-distro-based-on-Debian" target="_blank" class="btn bg">
       Follow on GitHub
     </a>
   </div>
@@ -166,7 +166,7 @@ nav{position:fixed;top:0;width:100%;z-index:999;padding:14px 32px;display:flex;a
 
 <div style="display:flex;gap:14px;padding:16px 0;border-bottom:1px solid var(--br)">
 <div><strong style="display:block;font-size:.9rem;margin-bottom:3px">Report bugs</strong>
-<p style="margin:0;font-size:.84rem">If something breaks, report it on GitHub or Discord.</p>
+<p style="margin:0;font-size:.84rem">If something breaks, report it on GitHub.</p>
 </div>
 </div>
 
@@ -188,9 +188,19 @@ nav{position:fixed;top:0;width:100%;z-index:999;padding:14px 32px;display:flex;a
 
 <footer>
   <div class="cnt">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-bottom:20px">
+      <a href="index.html" style="display:flex;align-items:center"><svg width="70" height="22" viewBox="0 0 200 60"><text x="0" y="46" font-family="Georgia,serif" font-size="48" font-weight="700" letter-spacing="-2"><tspan fill="#ffffff">Old</tspan><tspan fill="#3b82f6">OS</tspan></text></svg></a>
+      <div style="display:flex;gap:20px">
+        <a href="index.html" style="font-size:.85rem;color:var(--mu)">Home</a>
+        <a href="about.html" style="font-size:.85rem;color:var(--mu)">About</a>
+        <a href="downloads.html" style="font-size:.85rem;color:var(--mu)">Downloads</a>
+        <a href="beta.html" style="font-size:.85rem;color:var(--mu)">Beta</a>
+        <a href="contact.html" style="font-size:.85rem;color:var(--mu)">Contact</a>
+      </div>
+    </div>
     <div style="border-top:1px solid var(--br);padding-top:20px">
       <p style="font-size:.8rem;margin:0;color:var(--mu)">
-        © 2026 OldOS Group — Open-source Linux project based on Linux From Scratch · GPL-2.0
+        © 2026 OldOS Group — Open-source Linux project based on Debian 13 Testing · GPL-2.0
       </p>
 
       <p style="font-size:.75rem;color:#475569;margin:0">
